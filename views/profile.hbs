@@ -1,0 +1,222 @@
+{{> header}}
+<title>Profile</title>
+{{!-- <div class="alert-success">{{success}}</div>
+<div class="alert-danger">{{error}}</div> --}}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row pb-2 pr-2 pl-2">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3">
+                    <div class="card-header" style="background-color: white; color:black;">
+                        <h4><b>ADMIN PROFILE</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-primary card-outline" style="border-left: 2px solid black;">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="img-fluid" src="{{userExists.photo}}" alt="Profile picture">
+                        </div><br>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Name</b>
+                                <p class="float-right">
+                                    {{userExists.name}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Email</b>
+                                <p class="float-right">
+                                    {{userExists.email}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Phone Number</b>
+                                <p class="float-right">
+                                    {{userExists.phone}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Role</b>
+                                <p class="float-right">
+                                    {{userExists.role}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body" style="display: block;">
+                        {{!-- <form action="/admin/updateprofile/{{userExists._id}}" method="post"
+                            enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Full Name</label>
+                                        <input type="text" class="form-control" name="firstName" required maxlength="30"
+                                            minlength="3" value="{{userExists.name}}">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" name="email" maxlength="40"
+                                            value="{{userExists.email}}" oninput="validateEmail(this)">
+                                        <small id="emailError" style="color: red; display: none;">Please enter a valid
+                                            email address (e.g., example@domain.com).</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Phone Number</label>
+                                        <input type="text" class="form-control" name="phone" pattern="[0-9]{10}"
+                                            maxlength="10" title="Please enter exactly 10 numbers"
+                                            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                                            value="{{userExists.phone}}">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Profile Picture</label>
+                                        <input type="file" class="form-control" name="profilePicture"
+                                            id="profilePicture" accept="image/*">
+                                        <small id="charCount">Recommended dimensions: 512x512 px</small>
+                                        <div id="error-message" style="color: red; display: none;">Recommended
+                                            dimensions are 512x512 height and width only.</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="isAdmin" value="Super admin">
+                                </div>
+                                <button type="submit"
+                                    class="btn btn-warning col-md-4 offset-md-4 btn-block d-flex justify-content-center">Update</button>
+                        </form> --}}
+                        <form action="/admin/updateprofile/{{userExists._id}}" method="post"
+                            enctype="multipart/form-data" id="updateProfileForm">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Full Name</label>
+                                        <input type="text" class="form-control" name="name" required maxlength="30"
+                                            minlength="3" value="{{userExists.name}}" oninput="validateNameInput(this)">
+                                    </div>
+
+                                    <script>
+                                        function validateNameInput(input) {
+                                            // Allow only letters, spaces, and numbers
+                                            input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+                                        }
+                                    </script>
+
+                                    <div class="col-md-12">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" name="email" maxlength="40"
+                                            value="{{userExists.email}}" oninput="validateEmail(this)">
+                                        <small id="emailError" style="color: red; display: none;">Please enter a valid
+                                            email.</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Phone Number</label>
+                                        <input type="number" class="form-control" name="phone"
+                                            title="Please enter valid numbers"
+                                            oninput="this.value=this.value.replace(/[]/g,'');"
+                                            value="{{userExists.phone}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label>Profile Picture</label>
+                                    <input type="file" class="form-control" name="profilePicture" id="profilePicture"
+                                        accept="image/*">
+                                    <small id="charCount">Recommended dimensions: 512x512 px</small>
+                                    <div id="error-message" style="color: red; display: none;">Recommended
+                                        dimensions are 512x512 height and width only.</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="isAdmin" value="admin">
+                            </div>
+                            <button type="submit" id="updateButton"
+                                class="btn btn-warning col-md-4 offset-md-4 btn-block d-flex justify-content-center">Update</button>
+                            <div id="statusMessage" style="color: green; text-align: center; display: none;">
+                            </div>
+                    </div>
+                    </form>
+
+                    <script>
+                        document.getElementById('updateProfileForm').addEventListener('submit', function (e) {
+                            const updateButton = document.getElementById('updateButton');
+                            const statusMessage = document.getElementById('statusMessage');
+
+                            // Disable the button
+                            updateButton.disabled = true;
+                            updateButton.textContent = 'Updating...';
+
+                            // Show the status message
+                            statusMessage.style.display = 'block';
+
+                            // Re-enable the button and hide the message after 2 seconds
+                            setTimeout(() => {
+                                updateButton.disabled = false;
+                                updateButton.textContent = 'Update';
+                                statusMessage.style.display = 'none';
+                            }, 2000);
+                        });
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<script>
+    function validateEmail(input) {
+        // Convert to lowercase
+        input.value = input.value.toLowerCase();
+
+        // Stricter email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+        const errorElement = document.getElementById('emailError');
+
+        // Validate email
+        if (!emailRegex.test(input.value)) {
+            errorElement.style.display = 'block';
+        } else {
+            errorElement.style.display = 'none';
+        }
+    }
+</script>
+
+<script>
+    document.getElementById('profilePicture').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var errorMessage = document.getElementById('error-message');
+        var form = document.querySelector('form');  // Select your form element, if any
+
+        // If the user hasn't selected a file, clear any error message
+        if (!file) {
+            errorMessage.style.display = 'none';
+            return;
+        }
+
+        var img = new Image();
+        img.onload = function () {
+            // Check if the image dimensions are 512x512
+            if (img.width === 512 && img.height === 512) {
+                errorMessage.style.display = 'none';
+                // Optionally, you can enable a submit button or allow further actions
+                form.querySelector('button[type="submit"]').disabled = false;  // Enable submit button
+            } else {
+                errorMessage.style.display = 'block';
+                // Disable submit button or any action until dimensions are correct
+                form.querySelector('button[type="submit"]').disabled = true;  // Disable submit button
+            }
+        };
+
+        // Read the file as a URL and set it to the img element for validation
+        img.src = URL.createObjectURL(file);
+    });
+</script>
+{{> footer}}

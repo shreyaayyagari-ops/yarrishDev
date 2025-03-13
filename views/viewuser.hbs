@@ -1,0 +1,264 @@
+{{>header}}
+<title>User Details</title>
+{{!-- Check if there's a success message and display it --}}
+{{#if success}}
+  <div class="alert-success">{{success}}</div>
+{{/if}}
+
+{{!-- Check if there's an error message and display it --}}
+{{#if error}}
+  <div class="alert-danger">{{error}}</div>
+{{/if}}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row pb-2 pr-2 pl-2">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3">
+                    <div class="card-header" style="background-color: white; color:rgb(0, 0, 0);">
+                        <h4><b>User Details</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-primary card-outline" style="border-left: 2px solid black;">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-box" style="height: 50%; width:50%"
+                                src="{{User.photo}}" alt="User image"
+                                onerror="this.onerror=null; this.src='/admin/images/dummy.png';">
+
+
+                        </div><br>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Name</b>
+                                <p class="float-right">
+                                    {{User.name}}
+                                </p>
+                            </li>
+                            {{!-- <li class="list-group-item">
+                                <b>Id</b>
+                                <p class="float-right">
+                                    {{User._id}}
+                                </p>
+                            </li> --}}
+                            <li class="list-group-item">
+                                <b>Email</b>
+                                <p class="float-right">
+                                    {{User.email}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Phone</b>
+                                <p class="float-right">
+                                    {{User.phone}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Country</b>
+                                <p class="float-right">
+                                    {{#if User.country_id}}{{User.country_id.name}}{{else}}N/A{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Address</b>
+                                <p class="float-right">
+                                    {{#if User.address.address}}{{User.address.address}}{{else}}N/A{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Referral Code</b>
+                                <p class="float-right">
+                                    {{#if User.referralCode}}{{User.referralCode}}{{else}}N/A{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Status</b>
+                                <p class="float-right">
+                                    {{#if User.status}}{{User.status}}{{else}}N/A{{/if}}
+                                </p>
+                            </li>
+                            {{!-- <li class="list-group-item">
+                                <b>Address</b>
+                                <p class="float-right">
+                                    {{User.address}}
+                                </p>
+                            </li> --}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header p-8">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#details" data-toggle="tab">User Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#idProofs" data-toggle="tab">Booked Services</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <!-- User Details Tab -->
+                            <div class="tab-pane active" id="details">
+                                <form action="/admin/updateuser/{{User._id}}" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Name</label>
+                                                <input type="text" class="form-control" name="name" readonly
+                                                    value="{{User.name}}" placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Email</label>
+                                                <input type="email" class="form-control" name="email" readonly
+                                                    value="{{User.email}}" placeholder="Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Phone</label>
+                                                <input type="text" class="form-control" name="phone" readonly
+                                                    value="{{User.country_id.code}} - {{User.phone}}"
+                                                    placeholder="Phone Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Country</label>
+                                                <input type="text" class="form-control" name="country" readonly
+                                                    value="{{User.country_id.name}}" placeholder="Country">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Address</label>
+                                                <textarea class="form-control" readonly rows="1"
+                                                    name="address">{{User.address.address}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Referral Code</label>
+                                                <textarea class="form-control" readonly rows="1"
+                                                    name="referralCode">{{User.referralCode}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Status</label>
+                                                <select name="status" class="form-control">
+                                                    <option value="Active" {{#eq User.status 'Active' }} selected {{/eq}}>
+                                                        Active</option>
+                                                    <option value="Inactive" {{#eq User.status 'Inactive' }} selected
+                                                        {{/eq}}>Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button type="submit" class="btn btn-info col-md-4">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.tab-pane -->
+
+                            <!-- Booked Services Tab -->
+                            <div class="tab-pane" id="idProofs">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Status</th>
+                                            <th>Provider Name</th>
+                                            <th>Provider Phone</th>
+                                            <th>Booking Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each bookings}}
+                                        <tr>
+                                            <td>{{this.categoryId.name}}</td>
+                                            <td>{{this.status}}</td>
+                                            <td>{{this.serviceProviderId.name}}</td>
+                                            <td>{{this.serviceProviderId.phone}}</td>
+                                            <td>{{formatDate this.date.date "YYYY-MM-DD"}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+</section>
+{{>footer}}
+
+<script>
+    let data1
+    function subCategory() {
+        var category = document.getElementById('category').value;
+
+        // Clear previous subcategory options
+        var subcategoryDropdown = document.getElementById('subcategory');
+        subcategoryDropdown.innerHTML = '<option value="" disabled selected>Select User Sub-Category</option>';
+
+        var baseUrl = window.location.origin;
+
+        // Make an API call to fetch subcategories based on the selected category
+        fetch(`${baseUrl}/api/city/subcategories/${category}`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate the subcategory dropdown with the fetched subcategories
+                data1 = data
+                data.forEach(subcategory => {
+                    var option = document.createElement('option');
+                    option.value = subcategory.name;
+                    option.textContent = subcategory.name;
+                    subcategoryDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching subcategories:', error);
+            });
+    }
+
+    function categories() {
+        var subcategory = document.getElementById('subcategory').value;
+
+        // Find the selected subcategory in data1
+        var selectedSubcategory = data1.find(item => item.name === subcategory);
+
+        // Get the flavor dropdown
+        var flavorDropdown = document.getElementById('flavor');
+
+        // Check if the flavor is 'false' and make the dropdown read-only
+        if (selectedSubcategory && selectedSubcategory.flavor === 'false') {
+            flavorDropdown.setAttribute('disabled', 'disabled');
+        } else {
+            // Enable the dropdown if the flavor is not 'false'
+            flavorDropdown.removeAttribute('disabled');
+        }
+    }
+
+
+</script>

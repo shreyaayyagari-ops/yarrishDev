@@ -1,0 +1,492 @@
+{{>header}}
+<style>
+    /* For Webkit browsers (Chrome, Safari, Edge) */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* For Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+
+
+<title>Countries</title>
+<div class="row p-2" style="margin: 0px !important;">
+    <div class="col-md-12">
+        <div class="card mt-2" style="border-left: 2px solid black;">
+            {{!-- <div class="alert-success">{{success}}</div>
+            <div class="alert-danger">{{error}}</div> --}}
+            <div class="card-header" style="background-color:white; color:black;">
+                <h4><b>Countries</b></h4>
+            </div>
+            <div class="card-body p-2">
+                <div id="example1_wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ol class="float-sm-right">
+                                <button href="" id="" data-bs-toggle="modal" data-bs-target="#addModal"
+                                    style="background-color: rgb(0, 0, 0); color:white; border:none; border-radius:5px; width: 180px; height: 40px; "><i
+                                        class="fa-solid fa-plus"></i> Add Country</button>
+                            </ol>
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+                            <table id="example2" aria-describedby="example1_info">
+                                <thead>
+                                    <tr>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">S.No</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Name</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Icon</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Mobile Code</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">status</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Action</th>
+                                        {{!-- <th class="sorting" tabindex="0" aria-controls="example1">code</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">code</th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each allCountries}}
+                                    <tr class="odd">
+                                        <td>{{inc @index}}</td>
+                                        <td>{{this.name}}</td>
+                                        <td><img width="50" height="50" src="{{this.icon}}" alt=""></td>
+                                        <td>{{this.code}}</td>
+                                        <td>{{this.status}}</td>
+                                        <td>
+                                            <div class="eye d-flex justify-content-center">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-bs-target="#updateModal" class="btn btn-md btn-warning m-1"
+                                                    data-id="{{this._id}}" data-name="{{this.name}}"
+                                                    data-icon="{{this.icon}}" data-code="{{this.code}}"
+                                                    data-status="{{this.status}}" {{!--
+                                                    data-planpicture="{{this.planPicture}}" --}}>
+                                                    <i class="fa-solid fa-edit"></i>
+                                                </a>
+                                                <div class="eye">
+                                                    <a href="/admin/view-country/{{this._id}}"
+                                                        class="btn btn-md btn-info m-1">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </div>
+                                                {{!-- <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-id="{{this._id}}" data-bs-target="#deleteModal"
+                                                    class="btn btn-md btn-danger m-1">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- add country --}}
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="color: black; font-weight: bold; font-size: 40px;">Add Country</h5>
+            </div>
+            <form id="addCountryForm" action="/admin/store-country" method="post" enctype="multipart/form-data"
+                onsubmit="return handleFormSubmit()">
+                <div class="modal-body">
+                    <label for="name">Country Name</label><br>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Country Name" required
+                        oninput="validateCountryName()">
+                    <div id="countryNameError" class="text-danger" style="color: red; display: none;">Country name must
+                        be at least 3 characters long.</div>
+                </div>
+
+                <div class="modal-body">
+                    <label for="countryCode">Country Code</label>
+                    <input type="number" class="form-control" id="countryCode" name="code" minlength="1" maxlength="3"
+                        placeholder="Country code" required>
+                    <div id="countryCodeError" class="text-danger" style="color: red; display: none;">Please enter a
+                        valid country code (1-3 digits).</div>
+                </div>
+
+                <div class="modal-body">
+                    <label for="countryIcon">Icon</label>
+                    <input type="file" class="form-control" id="countryIcon" name="countryPicture" placeholder="file"
+                        accept=".jpg, .jpeg, .png" required>
+                    <small id="charCount">Recommended dimensions: 400x400 px, 512x512 px, etc.</small>
+                    <div id="countryIconError" class="text-danger" style="color: red; display: none;">Please upload a
+                        valid image file (.jpg, .jpeg, .png).</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submitBtn" class="btn btn-success"
+                        style="background-color: rgb(0, 0, 0); color:white">Add Country
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{!-- updarte --}}
+{{!-- <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: b lack; font-weight: bold;">Update country</h3>
+            </div>
+            <form action="/admin/updateplan/{{this._id}}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <label for="Country Name">Country Name</label><br>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Country Name">
+                </div>
+                <div class="modal-body">
+                    <label for="">Country Code</label>
+                    <input type="text" class="form-control code" name="code">
+                </div>
+                <div class="modal-body">
+                    <label for="">Icon</label>
+                    <input type="file" class="form-control" name="countryPicture" accept=".jpg, .img, .jpeg, .png"
+                        placeholder="Country code">
+                </div>
+                <div class="modal-body">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control status" value="1">
+                        <option value="Active">Active</option>
+                        <option value="In-Active">Inactive</option>
+                    </select>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"
+                        style="background-color: rgb(0, 0, 0); color:white">Update Country
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> --}}
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: black; font-weight: bold;">Update country</h3>
+            </div>
+            <form action="/admin/updateplan/{{this._id}}" method="post" enctype="multipart/form-data"
+                onsubmit="updateButtonClicked()">
+                <div class="modal-body">
+                    <label for="Country Name">Country Name</label><br>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Country Name">
+                </div>
+                <div class="modal-body">
+                    <label for="">Country Code</label>
+                    <input type="text" class="form-control code" minlength="1" maxlength="5" name="code">
+                </div>
+                <div class="modal-body">
+                    <label for="">Icon</label>
+                    <input type="file" class="form-control" name="countryPicture" accept=".jpg, .img, .jpeg, .png"
+                        placeholder="Country code">
+                </div>
+                <div class="modal-body">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control status" value="1">
+                        <option value="Active">Active</option>
+                        <option value="In-Active">Inactive</option>
+                    </select>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" id="updateButton"
+                        style="background-color: rgb(0, 0, 0); color:white">Update Country</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateButtonClicked() {
+        var button = document.getElementById('updateButton');
+        button.disabled = true;  // Disable the button
+        button.innerHTML = 'Updating...';  // Change text to 'Updating...'
+    }
+</script>
+
+{{!-- dleete --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 style="color: black; font-weight: 480;">Are you sure you want to delete this country?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a href="/admin/delete-country/{{this._id}}" type="button" class="btn btn-danger"> yes </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#example2')) {
+            $('#example2').addClass('table table-bordered table-striped').DataTable({
+                "paging": true,
+            });
+        }
+    });
+</script>
+<!--data should erase-->
+<script>
+    $(document).ready(function () {
+        // When the modal is hidden, clear the form fields
+        $('#addModal').on('hidden.bs.modal', function () {
+            // Reset the form data
+            $('#addCountryForm')[0].reset();
+        });
+    });
+</script>
+
+{{!-- buton hide --}}
+<script>
+    function handleFormSubmit() {
+        var submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "Adding...";
+        return true;
+    }
+    $('#addModal').on('hidden.bs.modal', function () {
+        var submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "Add Country";
+    });
+</script>
+{{!-- update modal --}}
+
+
+<script>
+    function validateCountryName() {
+        const countryName = document.getElementById('name').value;
+        const countryNameField = document.getElementById('name');
+        
+        // Check if the input has at least 3 characters
+        if (countryName.trim().length < 3) {
+            countryNameField.classList.add('input-error'); // Add red border
+            document.getElementById('countryNameError').style.display = 'block'; // Show error message
+        } else {
+            countryNameField.classList.remove('input-error'); // Remove red border
+            document.getElementById('countryNameError').style.display = 'none'; // Hide error message
+        }
+    }
+    const form = document.getElementById('countryForm');
+    const countryCodeInput = document.getElementById('countryCode');
+    const countryIconInput = document.getElementById('countryIcon');
+    const countryCodeError = document.getElementById('countryCodeError');
+    const countryIconError = document.getElementById('countryIconError');
+
+    form.addEventListener('submit', (event) => {
+        let isValid = true;
+
+        // Validate Country Code
+        const code = countryCodeInput.value;
+        if (!code || code.length < 1 || code.length > 5) {
+            countryCodeError.style.display = 'block';
+            isValid = false;
+        } else {
+            countryCodeError.style.display = 'none';
+        }
+
+        // Validate Icon
+        const file = countryIconInput.files[0];
+        if (!file || !['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+            countryIconError.style.display = 'block';
+            isValid = false;
+        } else {
+            countryIconError.style.display = 'none';
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            console.log('Button data:', button.data());
+
+            var modal = $(this);
+            var countryId = button.data('id');
+            var name = button.data('name');
+            var code = button.data('code');
+            var status = button.data('status');
+
+
+            modal.find('form').attr('action', '/admin/update-country/' + countryId);
+            modal.find('input[name="name"]').val(name);
+            $('.code').val(code);
+            $('.status').val(status);
+        });
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var countryId = button.data('id');
+            var modal = $(this);
+            modal.find('a.btn-danger').attr('href', '/admin/delete-country/' + countryId);
+        });
+        if (!$.fn.DataTable.isDataTable('#example2')) {
+            $('#example2').addClass('table table-bordered table-striped').DataTable({
+                "paging": true,
+            });
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('planPicture').addEventListener('change', validateFile);
+    function validateFile() {
+        const input = document.getElementById('planPicture');
+        const file = input.files[0];
+        if (file) {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = function () {
+                const width = img.naturalWidth;
+                const height = img.naturalHeight;
+                if (width !== height) {
+                    alert("Please upload an image with equal width and height (e.g., 512x512 px, 400x400 px).");
+                    input.value = "";
+                    document.getElementById('submitBtn').disabled = true;
+                } else {
+                    document.getElementById('submitBtn').disabled = false;
+                }
+            };
+        } else {
+            document.getElementById('submitBtn').disabled = true;
+        }
+    }
+</script>
+
+<script>
+    const textarea = document.getElementById('description');
+    const charCount = document.getElementById('charCount');
+
+    textarea.addEventListener('input', () => {
+        const remaining = 250 - textarea.value.length;
+        charCount.textContent = ${ remaining } characters remaining;
+    });
+</script>
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+
+<!-- jQuery -->
+<script src="/admin/js/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/admin/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="/admin/js/jquery.dataTables.min.js"></script>
+<script src="/admin/js/dataTables.bootstrap4.min.js"></script>
+<script src="/admin/js/dataTables.responsive.min.js"></script>
+<script src="/admin/js/responsive.bootstrap4.min.js"></script>
+<script src="/admin/js/dataTables.buttons.min.js"></script>
+<script src="/admin/js/buttons.bootstrap4.min.js"></script>
+<script src="/admin/js/jszip.min.js"></script>
+<script src="/admin/js/pdfmake.min.js"></script>
+<script src="/admin/js/vfs_fonts.js"></script>
+<script src="/admin/js/buttons.html5.min.js"></script>
+<script src="/admin/js/buttons.print.min.js"></script>
+<script src="/admin/js/buttons.colVis.min.js"></script>
+<script src="/admin/js/inputmask.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/admin/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/admin/js/demo.js"></script>
+
+<!-- Select2 -->
+<!--<script src="/admin/plugins/select2/js/select2.full.min.js"></script>-->
+
+<!-- Bootstrap Switch -->
+<script src="/admin/js/bootstrap-switch.min.js"></script>
+<script src="/admin/js/style.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+
+<script>
+    $("input[data-bootstrap-switch]").each(function () {
+        $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#example2')) {
+            $('#example2').addClass('table table-bordered table-striped').DataTable({
+                "paging": true,
+            });
+        }
+
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $("#example1").DataTable({
+            "responsive": true, "ordering": true, "lengthChange": false, "autoWidth": false, "bPaginate": true, "bInfo": false, "searching": true, "pageLength": 10,
+            order: [[0, 'asc']],
+            buttons: [
+                {
+                    extend: 'csvHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                'colvis'
+            ]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+
+    });
+</script>
+<script>
+    function validateInput(input) {
+        input.value = input.value.replace(/\D/g, '');
+    }
+</script>
+<script>
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+</script>
+</body>
+{{>footer}}
+
+</html>

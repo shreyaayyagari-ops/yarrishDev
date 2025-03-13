@@ -1,0 +1,117 @@
+{{>header}}
+<title>Bookings</title>
+<style>
+    #statusFilter {
+        width: 200px;
+        height: 30px;
+        border-radius: 5px;
+        border: 1px solid #2c9686;
+        background-color: white;
+    }
+</style>
+<div class="row p-2" style="margin: 0px !important;">
+    <div class="col-md-12">
+        <div class="card mt-2" style="border-left: 2px solid black;">
+            <div class="card-header" style="background-color:white; color:black;">
+                <h4><b>Bookings</b></h4>
+            </div>
+            <div class="card-body p-2">
+                <div id="example1_wrapper">
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <label for="statusFilter" class="form-label">Filter by Status</label>&nbsp;&nbsp;
+                            <select id="statusFilter" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="declined">Declined</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 table-responsive">
+                            <table id="example2" aria-describedby="example1_info">
+                                <thead>
+                                    <tr>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">S.No</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Service Name</th> 
+                                        {{!-- <th class="sorting" tabindex="0" aria-controls="example1">User Name</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">User Phone</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">User Email</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Service Name</th> --}}
+                                        {{!-- <th class="sorting" tabindex="0" aria-controls="example1">Serviceprovider Name
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Serviceprovider Phone
+                                        </th> --}}
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Booking Date & Time
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Payment Status</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">BookingStatus</th>
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each allBooking}}
+                                    <tr class="odd" data-status="{{this.status}}">
+                                        <td>{{inc @index}}</td>
+                                        <td>{{#if
+                                            this.categoryId.name}}{{this.categoryId.name}}{{else}}----------{{/if}}</td>
+                                        {{!-- <td>{{#if this.userId.name}}{{this.userId.name}}{{else}}----------{{/if}}</td>
+                                        <td>{{#if this.userId.phone}}{{this.userId.phone}}{{else}}----------{{/if}}</td>
+                                        <td>{{#if this.userId.email}}{{this.userId.email}}{{else}}----------{{/if}}</td>
+                                        <td>{{#if
+                                            this.categoryId.name}}{{this.categoryId.name}}{{else}}----------{{/if}}</td>
+                                        <td>{{#if
+                                            this.serviceProviderId.name}}{{this.serviceProviderId.name}}{{else}}----------{{/if}}
+                                        </td>
+                                        <td>{{#if
+                                            this.serviceProviderId.phone}}{{this.serviceProviderId.phone}}{{else}}----------{{/if}}
+                                        </td> --}}
+                                        <td>{{#if this.date}}{{formatDate this.date "YYYY-MM-DD"}}{{#if
+                                            this.timeId.time}}{{this.timeId.time}}{{/if}}{{else}}----------{{/if}}</td>
+                                        <td>{{this.paymentStatus}}</td>
+                                        <td>{{this.status}}</td>
+
+                                        <td>
+                                            <div class="eye d-flex justify-content-center">
+                                                <a href="/admin/bookings/{{this._id}}" class="btn btn-md btn-info m-1">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('#statusFilter, #serviceNameSearch').on('input', function () {
+            const selectedStatus = $('#statusFilter').val().toLowerCase();
+            const searchTerm = $('#serviceNameSearch').val().toLowerCase();
+
+            $('#example2 tbody tr').each(function () {
+                const rowStatus = $(this).data('status').toLowerCase();
+                const serviceName = $(this).data('service').toLowerCase();
+                if ((selectedStatus === "" || rowStatus === selectedStatus) &&
+                    (serviceName.includes(searchTerm) || searchTerm === "")) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+{{>footer}}
+
+</html>

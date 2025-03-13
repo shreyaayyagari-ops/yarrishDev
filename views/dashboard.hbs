@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .small-box {
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .small-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .small-box .inner {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .small-box .icon {
+            font-size: 50px;
+            color: #2c9686;
+        }
+
+        .small-box-footer {
+            background-color: #2c9686;
+            color: white;
+            border-radius: 0 0 10px 10px;
+            padding: 10px;
+            text-align: center;
+            display: block;
+        }
+
+        .small-box-footer:hover {
+            background-color: #236d5f;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        .col-lg-3 {
+            margin-bottom: 20px;
+        }
+
+
+        @media (max-width: 767px) {
+            .small-box {
+                height: 200px;
+            }
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .card h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #chartContainer {
+            width: 80%;
+            margin: auto;
+        }
+
+        #chartContainer1 {
+            width: 80%;
+            margin: auto;
+        }
+
+        canvas {
+            max-width: 700px;
+            max-height: 400px;
+        }
+
+        .card1 {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+            border: 0px solid #2c9686;
+        }
+    </style>
+</head>
+
+<body>
+
+    {{>header}}
+
+    <div class="container my-4">
+        <div class="row">
+            {{#if success}}
+            <div class="col-12">
+                <div class="alert alert-success">{{success}}</div>
+            </div>
+            {{/if}}
+
+            {{#if error}}
+            <div class="col-12">
+                <div class="alert alert-danger">{{error}}</div>
+            </div>
+            {{/if}}
+
+            <!-- Dashboard Stats Boxes -->
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allUsers}}</h3>
+                        <h4><b>Admins</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/admin/Admin" class="small-box-footer" style="background-color: #2c9686;">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allUsers}}</h3>
+                        <h4><b>Users</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/admin/User" class="small-box-footer" style="background-color: #2c9686;">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allUsers}}</h3>
+                        <h4><b>Service Providers</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/admin/ServiceProvider" class="small-box-footer" style="background-color: #2c9686;">More
+                        info
+                        <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allUsers}}</h3>
+                        <h4><b>Movie Theaters</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/admin/movieTheater" class="small-box-footer" style="background-color: #2c9686;">More info
+                        <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allUsers}}</h3>
+                        <h4><b>Banners</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/admin/banner" class="small-box-footer" style="background-color: #2c9686;">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allCountries}}</h3>
+                        <h4><b>Countries</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/admin/country" class="small-box-footer" style="background-color: #2c9686;">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allCategories}}</h3>
+                        <h4><b>Services</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/admin/category" class="small-box-footer" style="background-color: #2c9686;">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allSubscriptions}}</h3>
+                        <h4><b>Subscriptions</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/admin/subscription" class="small-box-footer" style="background-color: #2c9686;">More info
+                        <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allBooking}}</h3>
+                        <h4><b>Bookings</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/admin/booking" class="small-box-footer" style="background-color: #2c9686;">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box" style="border: 1px solid #2c9686;">
+                    <div class="inner">
+                        <h3>{{allSettings}}</h3>
+                        <h4><b>Settings</b></h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-settings"></i>
+                    </div>
+                    <a href="/admin/settings" class="small-box-footer" style="background-color: #2c9686;">More info <i
+                            class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <h3><b>Bookings</b></h3>
+                    <div id="chartContainer">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <h3><b>User</b></h3>
+                    <div id="chartContainer1">
+                        <canvas id="myPieChart1"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{!-- <div class="row">
+            <div class="card1">
+                <h3><b>Subscriptions</b></h3>
+                <canvas id="uniqueBarChart"></canvas>
+            </div>
+        </div> --}}
+    </div>
+
+    {{>footer}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // First Pie Chart
+        const ctx1 = document.getElementById('myPieChart').getContext('2d');
+
+        const myPieChart1 = new Chart(ctx1, {
+            type: 'pie', // Chart type
+            data: {
+                labels: ['Pending', 'Approved', 'Rejected', 'Completed', 'Cancelled'],
+                datasets: [{
+                    label: 'Vote Distribution',
+                    data: [10, 15, 5, 8, 2], // Replace with dynamic or static data
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                    ],
+                    borderWidth: 1 // Border width for slices
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'top' // Legend position
+                    },
+                    tooltip: {
+                        enabled: true // Enable tooltips
+                    }
+                },
+                responsive: true
+            }
+        });
+
+        // Second Pie Chart
+        const ctx2 = document.getElementById('myPieChart1').getContext('2d');
+
+        const myPieChart2 = new Chart(ctx2, {
+            type: 'doughnut', // Chart type
+            data: {
+                labels: ['Service Provider', 'User', 'Movie Theater', 'Admin'],
+                datasets: [{
+                    label: 'Vote Distribution',
+                    data: [{{ data2 }}], // Replace with dynamic or static data
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1 // Border width for slices
+            }]
+        },
+            options: {
+            plugins: {
+                legend: {
+                    position: 'top' // Legend position
+                },
+                tooltip: {
+                    enabled: true // Enable tooltips
+                }
+            },
+            responsive: true
+        }
+        });
+    </script>
+
+    <script>
+        // Get the canvas element
+        const ctx = document.getElementById('uniqueBarChart').getContext('2d');
+
+        // Create a gradient for the bars
+        // Create a gradient for the bars
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, '#a8e6cf'); // Top color (light mint green)
+        gradient.addColorStop(1, '#2c9686'); // Bottom color (rich teal)
+
+        // Data for the chart
+        const data = {
+            labels: ['January', 'February', 'March', 'April', 'May'],
+            datasets: [{
+                label: 'Subscriptions',
+                data: [500, 800, 400, 700, 900],
+                backgroundColor: gradient,
+                borderColor: '#2c9686',
+                borderWidth: 1,
+                borderRadius: 10, // Rounded corners
+                hoverBackgroundColor: '#37bfa9' // Slightly brighter teal for hover effect
+            }]
+        };
+
+
+        // Chart options
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14,
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return `${context.raw} in sales`;
+                        }
+                    },
+                    backgroundColor: '#333',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    titleFont: {
+                        size: 14,
+                    },
+                    bodyFont: {
+                        size: 12,
+                    },
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#555',
+                        font: {
+                            size: 12,
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#ddd'
+                    },
+                    ticks: {
+                        color: '#555',
+                        font: {
+                            size: 12,
+                        }
+                    }
+                }
+            }
+        };
+
+        // Create the bar chart
+        new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    </script>
+
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

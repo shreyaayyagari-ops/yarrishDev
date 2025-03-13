@@ -1,0 +1,196 @@
+{{>header}}
+<title>Booking Details</title>
+{{!-- <div class="alert-success">{{success}}</div>
+<div class="alert-danger">{{error}}</div> --}}
+<style>
+    .email-container {
+        display: flex;
+        justify-content: flex-end;
+        /* Align content to the right */
+        flex-wrap: wrap;
+        /* Allow content to wrap to the next line */
+    }
+
+    .email-text {
+        word-wrap: break-word;
+        white-space: normal;
+        margin-top: 5px;
+        overflow-wrap: break-word;
+        /* Ensure it breaks anywhere in long text */
+        font-size: 14px;
+        text-align: right;
+        /* Align text within the container to the right */
+    }
+
+    /* Optional styling for better readability */
+    .email-container b {
+        margin-right: auto;
+        /* Keep the label on the left */
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row pb-2 pr-2 pl-2">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3">
+                    <div class="card-header" style="background-color: white; color:rgb(0, 0, 0);">
+                        <h4><b>Booking Details</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-primary card-outline" style="border-left: 2px solid black;">
+                    <div class="card-body box-profile">
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Service Provider Email</b>
+                                <div class="email-container">
+                                    <p class="email-text">
+                                        {{ ServiceProvider.email}}
+                                    </p>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <b>Service Provider Phone</b>
+                                <p class="float-right">
+                                    {{#if ServiceProvider.phone}}{{ServiceProvider.phone}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>User Name</b>
+                                <p class="float-right">
+                                    {{#if User.name}}{{User.name}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>User Email</b>
+                                <p class="float-right">
+                                    {{#if User.email}}{{User.email}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>User Phone</b>
+                                <p class="float-right">
+                                    {{#if User.phone}}{{User.phone}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Service</b>
+                                <p class="float-right">
+                                    {{#if Category.name}}{{Category.name}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Service Date</b>
+                                <p class="float-right">
+                                    {{#if Date.date}}{{formatDate Date.date "YYYY-MM-DD"}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Status</b>
+                                <p class="float-right">
+                                    {{#if Status}}{{Status}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Payment Status</b>
+                                <p class="float-right">
+                                    {{#if PaymentStatus}}{{PaymentStatus}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header p-6">
+                    </div><!-- /.card-header -->
+                    {{!-- <div class="alert-success">{{success}}</div>
+                    <div class="alert-danger">{{error}}</div> --}}
+                    <div class="card-body" style="display: flex; flex-direction: column;">
+    {{!-- Add a button for View Service Provider --}}
+    <a href="/admin/ServiceProvider/{{ServiceProvider._id}}"
+       style="background-color: #2e2d2d; color: white; padding: 10px; border-radius: 5px; align-self: flex-end;">
+        <b>View Service Provider</b>
+    </a>
+    <div class="tab-content">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>S No.</th>
+                    <th>Services</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each Booking.serviceId}}
+                <tr>
+                    <td>{{inc @index}}</td>
+                    <td>{{this.name}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+                    <!-- /.tab-content -->
+                </div><!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{{>footer}}
+
+<script>
+    let data1
+    function subCategory() {
+        var category = document.getElementById('category').value;
+
+        var subcategoryDropdown = document.getElementById('subcategory');
+        subcategoryDropdown.innerHTML = '<option value="" disabled selected>Select Booking Sub-Category</option>';
+
+        var baseUrl = window.location.origin;
+
+
+        fetch(`${baseUrl}/api/city/subcategories/${category}`)
+            .then(response => response.json())
+            .then(data => {
+
+                data1 = data
+                data.forEach(subcategory => {
+                    var option = document.createElement('option');
+                    option.value = subcategory.name;
+                    option.textContent = subcategory.name;
+                    subcategoryDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching subcategories:', error);
+            });
+    }
+
+    function categories() {
+        var subcategory = document.getElementById('subcategory').value;
+
+        // Find the selected subcategory in data1
+        var selectedSubcategory = data1.find(item => item.name === subcategory);
+
+        // Get the flavor dropdown
+        var flavorDropdown = document.getElementById('flavor');
+
+        // Check if the flavor is 'false' and make the dropdown read-only
+        if (selectedSubcategory && selectedSubcategory.flavor === 'false') {
+            flavorDropdown.setAttribute('disabled', 'disabled');
+        } else {
+            // Enable the dropdown if the flavor is not 'false'
+            flavorDropdown.removeAttribute('disabled');
+        }
+    }
+
+
+</script>

@@ -1,0 +1,98 @@
+[
+  {
+    "sectionName": "Recliners",
+    "rows": [
+      {
+        "rowName": "C",
+        "seats": [
+          {
+            "seatNumber": "C1",
+            "seatType": "Recliner",
+            "price": 500,
+            "isBooked": false
+          },
+          {
+            "seatNumber": "C2",
+            "seatType": "Recliner",
+            "price": 500,
+            "isBooked": false
+          }
+        ]
+      }
+    ]
+  },    
+  {
+    "sectionName": "Balcony",
+    "rows": [
+      {
+        "rowName": "G",
+        "seats": [
+          {
+            "seatNumber": "G1",
+            "seatType": "Balcony",
+            "price": 300,
+            "isBooked": false
+          },
+          {
+            "seatNumber": "G2",
+            "seatType": "Balcony",
+            "price": 300,
+            "isBooked": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sectionName": "Regular",
+    "rows": [
+      {
+        "rowName": "H",
+        "seats": [
+          {
+            "seatNumber": "H1",
+            "seatType": "Regular",
+            "price": 200,
+            "isBooked": false
+          },
+          {
+            "seatNumber": "H2",
+            "seatType": "Regular",
+            "price": 200,
+            "isBooked": false
+          }
+        ]
+      }
+    ]
+  }
+]
+
+
+
+
+<script>
+    document.getElementById("submitButton").addEventListener("click", async function () {
+        const adminId = "{{adminId}}";
+        if (!adminId) {
+            alert("Admin ID is missing!");
+            return;
+        }
+        try {
+            const response = await fetch(`/payment/createorder/${adminId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            const result = await response.json();
+            if (response.ok && result.success) {
+                console.log("Order created successfully:", result.order);
+                alert("Order created successfully! Proceed to the payment gateway.");
+            } else {
+                console.error("Failed to create order:", result.message);
+                alert(result.message || "Failed to create order. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error while creating order:", error);
+            alert("Something went wrong. Please try again later.");
+        }
+    });
+</script>

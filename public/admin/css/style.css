@@ -1,0 +1,52 @@
+/* Button1 */
+.bn632-hover {
+    color: #fff;
+    cursor: pointer;
+    margin: 20px;
+    border: none;
+    background-size: 300% 100%;
+    /* moz-transition: all .4s ease-in-out; */
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  #modeel:hover{
+    border: 2px solid rgb(255, 255, 255) !important;
+  }
+  .bn632-hover:hover {
+    background-position: 100% 0;
+    /* moz-transition: all .4s ease-in-out; */
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  
+  .bn632-hover:focus {
+    outline: none;
+  }
+  
+  .bn632-hover.bn19 {
+    box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
+  }
+  .content-wrapper {
+    /* background-color: black; */
+    background-color: white;
+}
+.card-body{
+  color:white;
+  background-color: #409286;
+
+  /* background-image: linear-gradient(to bottom, #5b368b, #4d43bd, #3a89f8, #FFFFFF); */
+  box-shadow: 0 5px 5px 0 rgb(0, 0, 0);
+  /* box-shadow: linear-gradient(to right, #2E0366, #1400FF, #006AFF, #FFFFFF); */
+
+}
+.list-group-item{
+  background-color: transparent;
+}
+.float-right{
+  color: white;
+}
+.videoLink{
+  color: white;
+}

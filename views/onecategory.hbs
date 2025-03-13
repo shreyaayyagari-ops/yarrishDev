@@ -1,0 +1,409 @@
+{{>header}}
+<title>Services Details</title>
+<style>
+    .text-truncate {
+        max-width: 200px;
+        /* Adjust width as needed */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row pb-2 pr-2 pl-2">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3">
+                    <div class="card-header" style="background-color: white; color:rgb(0, 0, 0);">
+                        <h4><b>Services Details</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-primary card-outline" style="border-left: 2px solid black;">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-Services-img img-fluid img-box" src="{{category.icon}}"
+                                style="height: 50%; width:50%" alt="Services image">
+
+                        </div><br>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <b>Name</b>
+                                <span class="text-truncate" title="{{category.name}}">
+                                    {{category.name}}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 ">
+                <div class="card">
+                    {{!-- <div class="alert-success">{{success}}</div>
+                    <div class="alert-danger">{{error}}</div> --}}
+                    <div class="card-body">
+                        <div class="col-sm-12">
+                            <ol class="float-sm-right">
+                                <button href="" id="" data-bs-toggle="modal" data-bs-target="#addModal"
+                                    style="background-color: rgb(0, 0, 0); color:white; border:none; border-radius:5px; width: 180px; height: 40px; "><i
+                                        class="fa-solid fa-plus"></i> Add Sub Serivce</button>
+                            </ol>
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+                            <table id="example2" aria-describedby="example1_info">
+                                <thead>
+                                    <tr>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">S.No</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Sub Service </th>
+                                        {{!-- <th class="sorting" tabindex="0" aria-controls="example1">Service</th>
+                                        --}}
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Image</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">status</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each subcategories}}
+                                    <tr class="odd">
+                                        <td>{{inc @index}}</td>
+                                        <td>{{this.name}}</td>
+                                        {{!-- <td>{{this.category.name}}</td> --}}
+                                        <td><img width="25%" height="25%" src="{{this.icon_path}}" alt=""></td>
+                                        <td>{{this.status}}</td>
+                                        <td>
+                                            <div class="eye d-flex justify-content-center">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-bs-target="#updateModal" class="btn btn-md btn-info m-1"
+                                                    data-id="{{this._id}}" data-serviceTitle="{{this.name}}"
+                                                    data-id="{{this.category}}" data-serviceIcon="{{this.icon_path}}"
+                                                    data-categoryStatus="{{this.status}}">
+                                                    <i class="fa-solid fa-edit"></i>
+                                                </a>
+                                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-id="{{this._id}}" data-bs-target="#deleteModal"
+                                                    class="btn btn-md btn-danger m-1">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+        </div>
+    </div>
+    </div>
+</section>
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="color: black; font-weight: bold; font-size: 40px;">Add Sub Service</h5>
+            </div>
+            <form action="/admin/store-service/{{category._id}}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <label for="">Sub Service</label>
+                    <input type="text" class="form-control" name="name" id="sub-service" placeholder="sub-service name"
+                        required maxlength="40">
+                    <div id="sub-error-message" style="color: red; font-size: 12px; display: none;">
+                        Name should contain at least 2 characters
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <label for="service Icon">Image</label><br>
+                    <input type="file" class="form-control" name="servicePicture" required id="icon_path"
+                        accept=".jpg,.jpeg,.png"><br>
+                    <small id="charCount">Recommended dimensions: 400x400 px</small>
+                    <small id="error-message" style="color: red; display: none;"></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"
+                        style="background-color: rgb(0, 0, 0); color:white">Add Sub Serivce</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: black; font-weight: bold;">Update Sub Serivce</h3>
+            </div>
+            <form action="/admin/update-service/{{this._id}}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <label for="">Sub Service</label>
+                    <input type="text" class="form-control" name="name" id="sub-service" placeholder="Title" required>
+                    <div id="sub-error-message" style="color: red; font-size: 12px; display: none;">
+                        Name should contain at least 2 characters
+                    </div>
+                </div>
+
+
+                <div class="modal-body">
+                    <label for="name" class="col-form-label">Service:</label>
+                    <input type="text" class="form-control" placeholder="{{category.name}}" value="{{category.name}}"
+                        disabled required>
+                    <input type="hidden" class="form-control" name="category" value="{{category._id}}" required>
+                </div>
+                <div class="modal-body">
+                    <label for="name" class="col-form-label">Image</label>
+                    <input type="file" class="modal-file" name="servicePicture" id="icon_path" accept=".jpg,.jpeg,.png"
+                        onchange="validateImage(this)">
+                    <br>
+                    <small id="charCount">Recommended dimensions: 400x400 px,</small>
+                    <p id="error_message" style="color: red; display: none;"></p>
+                </div>
+
+                <div class="modal-body">
+                    <label for="status">Status</label>
+                    <select name="status" id="categoryStatus" class="form-control">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                {{!-- <div class="modal-body">
+                    <label for="preference" class="form-check-label" style="font-weight: bold;">Preference</label>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="preference" value="true"
+                            style="width: 20px; height: 20px;" {{#if this.preference}}checked{{/if}}>
+                    </div>
+                </div> --}}
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 style="color: black; font-weight: 480;">Are you sure you want to delete this sub service?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a href="/admin/delete-service/{{this._id}}" type="button" class="btn btn-danger"> yes </a>
+            </div>
+        </div>
+    </div>
+</div> --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteForm" action="" method="POST">
+                <input type="hidden" name="categoryId" value="{{category._id}}">
+                <div class="modal-header">
+                    <h4 style="color: black; font-weight: 480;">Are you sure you want to delete this sub service?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let data1
+    function subCategory() {
+        var category = document.getElementById('category').value;
+
+        // Clear previous subcategory options
+        var subcategoryDropdown = document.getElementById('subcategory');
+        subcategoryDropdown.innerHTML = '<option value="" disabled selected>Select Services Sub-Category</option>';
+
+        var baseUrl = window.location.origin;
+
+        // Make an API call to fetch subcategories based on the selected category
+        fetch(`${baseUrl}/api/city/subcategories/${category}`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate the subcategory dropdown with the fetched subcategories
+                data1 = data
+                data.forEach(subcategory => {
+                    var option = document.createElement('option');
+                    option.value = subcategory.name;
+                    option.textContent = subcategory.name;
+                    subcategoryDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching subcategories:', error);
+            });
+    }
+
+    function categories() {
+        var subcategory = document.getElementById('subcategory').value;
+
+        // Find the selected subcategory in data1
+        var selectedSubcategory = data1.find(item => item.name === subcategory);
+
+        // Get the flavor dropdown
+        var flavorDropdown = document.getElementById('flavor');
+
+        // Check if the flavor is 'false' and make the dropdown read-only
+        if (selectedSubcategory && selectedSubcategory.flavor === 'false') {
+            flavorDropdown.setAttribute('disabled', 'disabled');
+        } else {
+            // Enable the dropdown if the flavor is not 'false'
+            flavorDropdown.removeAttribute('disabled');
+        }
+    }
+
+
+</script>
+
+<script>
+    const fileInput = document.getElementById('icon_path');
+    const errorMessage = document.getElementById('error-message');
+
+    fileInput.addEventListener('change', async (event) => {
+        errorMessage.style.display = 'none'; // Reset error message
+        const file = event.target.files[0];
+
+        if (!file) return; // No file selected
+
+        // Validate file size (e.g., 2 MB limit)
+        const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB
+        if (file.size > maxSizeInBytes) {
+            errorMessage.textContent = 'File size exceeds 2 MB.';
+            errorMessage.style.display = 'block';
+            fileInput.value = ''; // Reset file input
+            return;
+        }
+
+        // Validate dimensions (400x400 px)
+        const image = new Image();
+        image.src = URL.createObjectURL(file);
+
+        image.onload = () => {
+            if (image.width !== 400 || image.height !== 400) {
+                errorMessage.textContent = 'Image dimensions must be 400x400 px.';
+                errorMessage.style.display = 'block';
+                fileInput.value = ''; // Reset file input
+            } else {
+                console.log('Image is valid.');
+            }
+            URL.revokeObjectURL(image.src); // Free up memory
+        };
+    });
+</script>
+
+<script>
+    function validateImage(input) {
+        const file = input.files[0];
+        const errorElement = document.getElementById('error_message');
+        errorElement.style.display = 'none';
+
+        if (file) {
+            const allowedFormats = ['image/jpeg', 'image/png'];
+            const img = new Image();
+
+            // Check file type
+            if (!allowedFormats.includes(file.type)) {
+                errorElement.textContent = "Only JPG and PNG formats are allowed.";
+                errorElement.style.display = 'block';
+                input.value = ''; // Reset file input
+                return;
+            }
+
+            // Check dimensions
+            img.onload = function () {
+                const width = img.naturalWidth;
+                const height = img.naturalHeight;
+
+                if (width !== 400 || height !== 400) {
+                    errorElement.textContent = "Image dimensions must be 400x400 px.";
+                    errorElement.style.display = 'block';
+                    input.value = ''; // Reset file input
+                }
+            };
+
+            // Read the image file
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+<script>
+    const subServiceInput = document.getElementById("sub-service");
+    const subErrorMessage = document.getElementById("sub-error-message");
+
+    subServiceInput.addEventListener("input", function () {
+        // Check if the length of the input is less than 3 characters
+        if (subServiceInput.value.length < 2 && subServiceInput.value.trim() !== "") {
+            subErrorMessage.style.display = "block";  // Show error message
+            subServiceInput.style.borderColor = "red"; // Apply red border color
+        } else {
+            subErrorMessage.style.display = "none";  // Hide error message if valid
+            subServiceInput.style.borderColor = "";  // Remove red border color if valid
+        }
+    });
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#example2')) {
+            $('#example2').addClass('table table-bordered table-striped').DataTable({
+                "paging": true,
+            });
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#updateModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            var serviceId = button.data('id');
+            var serviceTitle = button.data('servicetitle');
+            var categoryId = button.data('category');
+            var Status = button.data('Status');
+            modal.find('form').attr('action', '/admin/update-service/' + serviceId);
+            modal.find('input[name="name"]').val(serviceTitle);
+            modal.find('input[name="categoryId"]').val(categoryId);
+            modal.find('input[name="Status"]').val(Status);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var serviceId = button.data('id');
+            var categoryId = button.data('category-id');
+            var modal = $(this);
+            modal.find('#deleteForm').attr('action', '/admin/delete-service/' + serviceId);
+            modal.find('#categoryId').val(categoryId);
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#example2')) {
+            $('#example2').addClass('table table-bordered table-striped').DataTable({
+                "paging": true,
+            });
+        }
+    });
+</script>
+
+{{>footer}}

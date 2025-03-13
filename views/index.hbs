@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- FontAwesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('/admin/images/bg.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 520px;
+            box-sizing: border-box;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #555;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            background-color: #0fa5ca;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .login-button:hover {
+            background-color: #0fa5ca;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .forgot-password a {
+            color: #0fa5ca;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear {
+            display: none;
+        }
+
+        /* Toast Notification CSS */
+        .toast {
+            visibility: hidden;
+            max-width: 50%;
+            margin: 0 auto;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 26px;
+            position: fixed;
+            z-index: 1;
+            right: 10px;
+            top: 30px;
+            font-size: 17px;
+            transform: translateX(-50%);
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {
+                right: 0;
+                opacity: 0;
+            }
+
+            to {
+                right: 10px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                right: 10px;
+                opacity: 1;
+            }
+
+            to {
+                right: 0;
+                opacity: 0;
+            }
+        }
+
+        .toast-success {
+            background-color: rgb(13, 223, 13);
+        }
+
+        .toast-error {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form class="form-horizontal" action="/auth/loginpost" method="POST">
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="email" id="username" name="email" required value="{{email}}" oninput="validateEmail()">
+                {{!-- <p class="error-message" id="email-error" style="display: none; color: red;">Enter a valid email
+                    address
+                </p> --}}
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required value="{{password}}">
+                <i style="margin: 10px;" class="fa-solid fa-eye eye-icon" id="togglePassword" title="Show Password"
+                    onclick="togglePassword()"></i>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        <div class="forgot-password" style="margin-bottom: 20px;">
+            <a href="/auth/forgotpassword">Forgot Password?</a>
+        </div>
+    </div>
+
+
+    <!-- Toast containers -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Check if the page needs to be reloaded
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // Check if the page is loaded from the cache or back navigation
+                if (!sessionStorage.getItem('reloaded')) {
+                    // Set a flag in sessionStorage to prevent multiple reloads
+                    sessionStorage.setItem('reloaded', 'true');
+                    // Reload the page
+                    window.location.reload();
+                }
+            }
+        });
+
+        // Reset the sessionStorage flag when the page is unloaded
+        window.addEventListener('beforeunload', function () {
+            sessionStorage.removeItem('reloaded');
+        });
+    </script>
+    <script>
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+                toggleIcon.title = 'Hide Password';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+                toggleIcon.title = 'Show Password';
+            }
+        }
+
+
+        // Email validation script
+        const emailInput = document.getElementById('username');
+        const emailError = document.getElementById('email-error');
+        const emailPattern = /^[a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.(com|in|org|jnu|ac)$/i;
+        const existingEmails = [
+            'test@domain.com',
+            'example@domain.in',
+            'admin@domain.org'
+        ];
+        emailInput.addEventListener('input', function () {
+            const email = emailInput.value.trim().toLowerCase();
+            emailError.style.display = "none";
+
+            if (!email) {
+                displayError('Email cannot be empty.');
+            } else if (!emailPattern.test(email)) {
+                displayError('Invalid email format. Please ensure the email contains "@" and a valid domain.');
+            } else if (existingEmails.includes(email)) {
+                showToast('Email already exists. Please use a different email.', 'error');
+                emailInput.value = '';
+            }
+        });
+
+        function displayError(message) {
+            emailError.textContent = message;
+            emailError.style.display = "block";
+        }
+
+
+
+        emailInput.addEventListener('blur', function () {
+            if (emailInput.value !== '' && !emailPattern.test(emailInput.value)) {
+                showToast('Invalid email format. Please ensure the email contains "@" and a valid domain.');
+                emailInput.value = '';
+                emailError.style.display = "none";
+            }
+        });
+
+        // Automatically remove leading spaces from password field
+        const passwordInput = document.getElementById('password');
+        passwordInput.addEventListener('input', function () {
+            passwordInput.value = passwordInput.value.replace(/^\s+/, ''); // Remove leading spaces
+        });
+
+        // Toast message function
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.className = 'toast show ' + (type === 'success' ? 'toast-success' : 'toast-error');
+            toast.textContent = message;
+
+            setTimeout(function () {
+                toast.className = toast.className.replace('show', '');
+            }, 3000);
+        }
+
+        // Simulate backend messages (Replace these with actual backend data)
+        const error = '{{error}}'; // Backend error
+        const success = '{{success}}'; // Backend success
+
+        // Display the appropriate toast message on page load
+        if (error) {
+            showToast(error, 'error');
+        } else if (success) {
+            showToast(success, 'success');
+        }
+    </script>
+
+</body>
+
+</html>

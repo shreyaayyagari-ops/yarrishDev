@@ -1,0 +1,193 @@
+{{>header}}
+
+<style>
+    /* For Webkit browsers (Chrome, Safari, Edge) */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* For Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<title>Time Slots</title>
+
+<div class="row p-2" style="margin: 0px !important;">
+    <div class="col-md-12">
+        <div class="card mt-2" style="border-left: 2px solid black;">
+            <div class="card-header" style="background-color:white; color:black;">
+                <h4><b>Time Slots</b></h4>
+            </div>
+            <div class="card-body p-2">
+                <div id="example1_wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ol class="float-sm-right">
+                                <button id="addModalBtn" data-bs-toggle="modal" data-bs-target="#addModal"
+                                    style="background-color: rgb(0, 0, 0); color:white; border:none; border-radius:5px; width: 180px; height: 40px;">
+                                    <i class="fa-solid fa-plus"></i> Add Time Slot
+                                </button>
+                            </ol>
+                        </div>
+                        <div class="col-sm-12 table-responsive">
+                            <table id="example2" aria-describedby="example1_info">
+                                <thead>
+                                    <tr>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">S.No</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Time Slot</th>
+                                        <th class="sorting" tabindex="0" aria-controls="example1">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each alltime}}
+                                    <tr class="odd">
+                                        <td>{{inc @index}}</td>
+                                        <td>{{this.time}}</td>
+                                        <td>
+
+                                            {{!-- <div class="eye d-flex justify-content-center">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-bs-target="#updateModal" class="btn btn-md btn-warning m-1"
+                                                    data-id="{{this._id}}" data-bannerPicture="{{this.bannerPicture}}"
+                                                    data-status="{{this.status}}">
+                                                    <i class="fa-solid fa-edit"></i>
+                                                </a> --}}
+
+                                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-id="{{this._id}}" data-bs-target="#deleteModal"
+                                                    class="btn btn-md btn-danger m-1">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Time Slot Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="color: black; font-weight: bold; font-size: 40px;">Add Time Slot</h5>
+            </div>
+            <form id="addTimeForm" action="/admin/addtime" method="post" onsubmit="return validateForm()">
+                <div class="modal-body">
+                    <label for="time">Time Slot</label>
+                    <div class="d-flex align-items-center">
+                        <input type="time" class="form-control" id="time" name="time">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submitBtn" class="btn btn-success"
+                        style="background-color: black; color:white;">
+                        Add Time Slot
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        const timeInput = document.getElementById("time").value;
+        if (!timeInput) {
+            alert("Please select a time slot.");
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 style="color: black; font-weight: 480;">Are you sure you want to delete this Time slot?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a href="" id="deleteBannerLink" type="button" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Function to handle form submission and create a hidden input field with the formatted time
+    function handleFormSubmit() {
+        const time = document.querySelector('input[name="time"]').value;
+        const minute = document.querySelector('input[name="minute"]').value;
+        const meridian = document.querySelector('select[name="meridian"]').value;
+
+        // Combine the time in the required format (e.g., "10:30 AM")
+        const timeSlot = `${time}:${minute} ${meridian}`;
+
+        // Create a hidden input field with the time slot
+        const timeInput = document.createElement('input');
+        timeInput.type = 'hidden';
+        timeInput.name = 'time';
+        timeInput.value = timeSlot;
+
+        // Append the hidden input to the form
+        document.getElementById('addTimeSlotForm').appendChild(timeInput);
+
+        // Ensure the form is submitted after modifying the input
+        document.getElementById('addTimeSlotForm').submit();
+    }
+
+    // Attach the form submit event to handle custom submission
+    document.getElementById('addTimeSlotForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        handleFormSubmit();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#example2')) {
+            $('#example2').addClass('table table-bordered table-striped').DataTable({
+                "paging": true,
+            });
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var bannerId = button.data('id');
+
+            var modal = $(this);
+
+
+            modal.find('#deleteBannerLink').attr('href', '/admin/delete-time/' + bannerId);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#addModal').on('hidden.bs.modal', function () {
+            $('#addTimeSlotForm')[0].reset();
+        });
+    });
+</script>
+
+{{>footer}}

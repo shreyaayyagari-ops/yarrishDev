@@ -1,0 +1,329 @@
+{{>header}}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.13/build/css/intlTelInput.min.css">
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.13/build/js/intlTelInput.min.js"></script>
+<style>
+  #phone {
+    padding-left: 50px;
+    width: 470px;
+  }
+
+  #update-phone {
+    padding-left: 50px;
+    width: 470px;
+  }
+</style>
+<title>Executives</title>
+<div class="row p-2" style="margin: 0px !important;">
+  <div class="col-md-12">
+    <div class="card mt-2" style="border-left: 2px solid black;">
+      {{!-- {{!-- <div class="alert-success">{{success}}</div>
+      <div class="alert-danger">{{error}}</div> --}}
+      <div class="card-header" style="background-color:white; color:#2c9686white;">
+        <h4><b>Executives</b></h4>
+      </div>
+      <div class="card-body p-2">
+        <div id="example1_wrapper">
+          <div class="row">
+            <div class="col-sm-12">
+              <ol class="float-sm-right">
+                <button href="" id="" data-bs-toggle="modal" data-bs-target="#addModal"
+                  style="background-color: rgb(0, 0, 0); color:white; border:none; border-radius:5px; width: 180px; height: 40px; "><i
+                    class="fa-solid fa-plus"></i> Add Executives</button>
+              </ol>
+            </div>
+            <div class="col-sm-12 table-responsive">
+              <table id="example2" class="table table-bordered table-striped" aria-describedby="example1_info">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each allexecutive}}
+                  <tr>
+                    <td>{{inc @index}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.status}}</td>
+                    <td>
+                      <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#updateModal"
+                        class="btn btn-md btn-info m-1" data-id="{{this._id}}" data-name="{{this.name}}"
+                        data-email="{{this.email}}" data-phone="{{this.phone}}" data-status="{{this.status}}">
+                        <i class="fa-solid fa-edit"></i>
+                      </a>
+                      <div>
+                        <a href="/admin/movieTheater/{{this._id}}" class="btn btn-md btn-primary m-1">
+                          <i class="fa-solid fa-eye" style="color: black;"></i>
+                        </a>
+                      </div>
+                      <a href="javascript:void(0);" data-bs-toggle="modal" data-id="{{this._id}}"
+                        data-bs-target="#deleteModal" class="btn btn-md btn-danger m-1">
+                        <i class="fa-solid fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel" style="color: black; font-weight: bold; font-size: 40px;">Add Movie
+          Theater
+        </h5>
+      </div>
+      <form action="/admin/add-executive" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+          <label for="">Name</label>
+          <input type="text" class="form-control" name="name" placeholder="First Name" required maxlength="30"
+            minlength="3">
+        </div>
+        <div class="modal-body">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" name="email" id="email" placeholder="Email" required maxlength="50"
+            oninput="validateEmail(this)">
+          <small id="emailError" style="color: red; display: none;">Please enter a valid email address (e.g.,
+            example@domain.com).</small>
+        </div>
+
+        <script>
+          function validateEmail(input) {
+
+            input.value = input.value.toLowerCase();
+
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+            const errorElement = document.getElementById('emailError');
+
+
+            if (!emailRegex.test(input.value)) {
+              errorElement.style.display = 'block';
+            } else {
+              errorElement.style.display = 'none';
+            }
+          }
+        </script>
+
+        <div class="modal-body">
+          <label for="phone">Mobile</label>
+          <div class="input-group">
+            <!-- Country Code Dropdown -->
+            <input type="tel" id="phone" class="form-control" name="phone" placeholder="Mobile Number"
+              value="{{User.phone}}" required>
+          </div>
+        </div>
+
+        <script>
+
+          var input = document.querySelector("#phone");
+          var iti = window.intlTelInput(input, {
+            initialCountry: "auto",
+            separateDialCode: true,
+            preferredCountries: ['us', 'gb', 'ca'],
+          });
+        </script>
+
+        {{!-- <div class="modal-body">
+          <label for="">Password</label>
+          <div class="input-group">
+            <input type="password" class="form-control" name="password" placeholder="Enter Password here" required
+              minlength="8" maxlength="10"
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"
+              title="Password must be 8-10 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
+              id="password">
+            <button type="button" class="btn btn-outline-secondary"
+              onclick="togglePasswordVisibility('password', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <label for="">Confirm Password</label>
+          <div class="input-group">
+            <input type="password" class="form-control" name="confirmPassword" placeholder="Enter Password here"
+              required id="confirmPassword">
+            <button type="button" class="btn btn-outline-secondary"
+              onclick="togglePasswordVisibility('confirmPassword', this)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+        <script>
+          function togglePasswordVisibility(fieldId, button) {
+            const field = document.getElementById(fieldId);
+            const icon = button.querySelector('i');
+
+            if (field.type === 'password') {
+              field.type = 'text';
+              icon.classList.remove('fa-eye');
+              icon.classList.add('fa-eye-slash');
+            } else {
+              field.type = 'password';
+              icon.classList.remove('fa-eye-slash');
+              icon.classList.add('fa-eye');
+            }
+          }
+        </script> --}}
+
+
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add Movie Theater
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="color: black; font-weight: bold;">Update Executive</h3>
+      </div>
+      <form action="/admin/update-executive/{{this._id}}" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+          <label for="">Name</label>
+          <input type="text" class="form-control" name="name" id="update-name" placeholder="Name" required
+            maxlength="30" minlength="3">
+        </div>
+
+        <div class="modal-body">
+          <label for="">Email</label>
+          <input type="text" class="form-control" name="email" id="update-email" placeholder="Email" required
+            maxlength="50" oninput="validateEmail(this)">
+          <small id="emailError" style="color: red; display: none;">Please enter a valid email address (e.g.,
+            example@domain.com).</small>
+        </div>
+
+        <script>
+          function validateEmail(input) {
+
+            input.value = input.value.toLowerCase();
+
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+            const errorElement = document.getElementById('emailError');
+
+
+            if (!emailRegex.test(input.value)) {
+              errorElement.style.display = 'block';
+            } else {
+              errorElement.style.display = 'none';
+            }
+          }
+        </script>
+
+        <div class="modal-body">
+          <label for="update-phone">Mobile</label>
+          <div class="input-group">
+            <input type="tel" class="form-control" id="update-phone" name="phone" placeholder="Phone Number" required>
+          </div>
+        </div>
+
+        <script>
+
+          var input = document.querySelector("#update-phone");
+          var iti = window.intlTelInput(input, {
+            initialCountry: "auto",
+            separateDialCode: true,
+            preferredCountries: ['us', 'gb', 'ca'],
+          });
+        </script>
+
+        </script>
+        <div class="modal-body">
+          <label for="status" class="col-sm-3 col-form-label text-end">Status</label>
+          <select name="status" id="status" class="form-control statuss">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 style="color: black; font-weight: 480;">Are you sure you want to delete this?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a href="/admin/delete-executive/{{this._id}}" type="button" class="btn btn-danger">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+<script>
+  $(document).ready(function () {
+    // Initialize DataTable
+    if (!$.fn.DataTable.isDataTable('#example2')) {
+      $('#example2').addClass('table table-bordered table-striped').DataTable({
+        "paging": true,
+      });
+    }
+
+    // Update modal functionality
+    $('#updateModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var modal = $(this);
+      var executiveId = button.data('id');
+      var name = button.data('name');
+      var email = button.data('email');
+      var phone = button.data('phone');
+      var status = button.data('status');
+
+      modal.find('form').attr('action', '/admin/update-executive/' + executiveId);
+      modal.find('#update-name').val(name);
+      modal.find('#update-email').val(email);
+      modal.find('#update-phone').val(phone);
+      $(".statuss").val(status);
+    });
+
+    // Delete modal functionality
+    $('#deleteModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var executiveId = button.data('id');
+      var modal = $(this);
+      modal.find('a.btn-danger').attr('href', '/admin/delete-executive/' + executiveId);
+    });
+  });
+</script>
+
+{{>footer}}
+
+</html>

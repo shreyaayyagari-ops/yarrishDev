@@ -1,0 +1,185 @@
+{{>header}}
+<title>Users</title>
+<div class="row p-2" style="margin: 0px !important;">
+  <div class="col-md-12">
+    <div class="card mt-2" style="border-left: 2px solid black;">
+      {{!-- <div class="alert-success">{{success}}</div>
+      <div class="alert-danger">{{error}}</div> --}}
+      <div class="card-header" style="background-color:white; color:black;">
+        <h4><b>Users</b></h4>
+      </div>
+      <div class="float-sm-left">
+        <button id="downloadExcel" class="btn btn-success btn-md m-1">Download Excel</button>
+        <button id="downloadPDF" class="btn btn-danger btn-md m-1">Download PDF</button>
+      </div>
+      <div class="card-body p-2">
+        <div id="example1_wrapper">
+          <div class="row">
+            <div class="col-sm-12">
+              <ol class="float-sm-right"></ol>
+            </div>
+            <div class="col-sm-12 table-responsive">
+              <table id="example2" aria-describedby="example1_info">
+                <thead>
+                  <tr>
+                    <th class="sorting" tabindex="0" aria-controls="example1">S.No</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1">Name</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1">Email</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1">Mobile</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1">Role</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1">Status</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each allUser}}
+                  <tr class="odd">
+                    <td>{{inc @index}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.role}}</td>
+                    <td>{{this.status}}</td>
+                    <td>
+                      <div class="eye d-flex justify-content-center">
+                        {{#if (eql this.role "user")}}
+                        <a href="/admin/User/{{this._id}}" class="btn btn-md btn-info m-1">
+                          <i class="fa-solid fa-eye"></i>
+                        </a>
+                        {{/if}}
+                        {{#if (eql this.role "service_provider")}}
+                        <a href="/admin/ServiceProvider/{{this._id}}" class="btn btn-md btn-info m-1">
+                          <i class="fa-solid fa-eye"></i>
+                        </a>
+                        {{/if}}
+                        {{!-- <a href="/admin/updateuser/{{this._id}}" data-bs-toggle="modal" data-bs-target="#updateModal"
+                          class="btn btn-md btn-warning m-1" data-status="{{this.status}}">
+                          <i class="fa-solid fa-edit"></i>
+                        </a> --}}
+
+                        {{!-- <a href="javascript:void(0);" data-bs-toggle="modal" data-id="{{this._id}}"
+                          data-bs-target="#deleteModal" class="btn btn-md btn-danger m-1">
+                          <i class="fa-solid fa-trash"></i>
+                        </a> --}}
+                      </div>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="color: black; font-weight: bold;">Update Admin</h3>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+          <label for="status" class="col-sm-3 col-form-label text-end">Status</label>
+          <select name="status" id="status" class="form-control statuss">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+<script>
+  $(document).ready(function () {
+    if (!$.fn.DataTable.isDataTable('#example2')) {
+      $('#example2').addClass('table table-bordered table-striped').DataTable({
+        "paging": true,
+        "searching": true,
+        "lengthChange": true,
+        "ordering": true,
+        "info": true
+      });
+    }
+  });
+</script>
+
+
+<script>
+  $('#updateModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget);
+    const modal = $(this);
+    const userId = button.data('id');
+    const status = button.data('status');
+
+    modal.find('form').attr('action', '/admin/update-user/' + userId);
+    modal.find('.statuss').val(status); // Pre-fill the status field
+  });
+
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+
+<script>
+  document.getElementById('downloadExcel').addEventListener('click', function () {
+    const table = document.getElementById('example2');
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Service Providers" });
+    XLSX.writeFile(wb, 'service_providers.xlsx');
+  });
+</script>
+
+<!-- Export to PDF functionality -->
+<script>
+  document.getElementById('downloadPDF').addEventListener('click', function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Add Title
+    doc.text('Users List', 10, 10);
+
+    // Extract table data
+    const table = document.getElementById('example2');
+    const rows = [];
+    for (let i = 1; i < table.rows.length; i++) { // Skip header row
+      const rowData = [];
+      for (let cell of table.rows[i].cells) {
+        rowData.push(cell.innerText.trim());
+      }
+      rows.push(rowData);
+    }
+
+    // Add table to PDF
+    doc.autoTable({
+      head: [['S.No', 'Name', 'Email', 'Mobile', 'Action']],
+      body: rows,
+      startY: 20, // Adjust to prevent overlap with the title
+    });
+
+    // Save PDF
+    doc.save('users_list.pdf');
+  });
+
+</script>
+
+{{>footer}}
+
+</html>

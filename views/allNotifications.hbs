@@ -1,0 +1,158 @@
+{{>header}}
+
+<title>Notifications</title>
+
+<style>
+    /* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .card {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        color: #333;
+        padding: 15px;
+        font-size: 1.25rem;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 18px;
+        width: 180px;
+        height: 40px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .alert {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .alert-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .notifications-list {
+        margin-top: 30px;
+    }
+
+    .notification-item {
+        border-bottom: 1px solid #ddd;
+        padding: 15px;
+    }
+
+    .notification-item h3 {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .notification-item p {
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+
+    .notification-img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+    }
+</style>
+
+
+{{!-- <div class="notifications-list mt-4">
+    {{#each allNotifications}}
+    <div class="notification-item">
+        <h3>{{this.title}}</h3>
+        <p>{{this.message}}</p>
+        {{#if this.image}}
+        <img src="{{this.image}}" alt="Notification Image" class="notification-img">
+        {{/if}}
+    </div>
+    {{/each}}
+</div> --}}
+
+<div class="row p-2" style="margin: 0;">
+    <div class="col-md-12">
+        <div class="card mt-2" style="border-left: 2px solid black;">
+            <div class="card-header" style="background-color:white; color:black;">
+                <h4><b>Notifications</b></h4>
+            </div>
+            <div class="card-body p-2">
+                <!-- Add Notification Form -->
+                <form action="/admin/add-notification" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" minlength="1" maxlength="20" required
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" minlength="10" maxlength="200" required
+                            class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">To</label>
+                        <select name="role" class="form-control" id="role" required>
+                            <option value="user">User</option>
+                            <option value="service_provider">Service Provider</option>
+                        </select>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" style="background-color: black;">Add Notification</button>
+                    </div>
+                </form>
+
+              
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>footer}}

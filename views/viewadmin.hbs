@@ -1,0 +1,339 @@
+{{>header}}
+<title>Admin Details</title>
+<style>
+    #phone {
+        padding-left: 50px;
+        width: 470px;
+    }
+
+    .no-spinner::-webkit-inner-spin-button,
+    .no-spinner::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .no-spinner {
+        -moz-appearance: textfield;
+    }
+</style>
+{{!-- User details content section --}}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row pb-2 pr-2 pl-2">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3">
+                    <div class="card-header" style="background-color: white; color: black">
+                        <h4><b>Admin Details</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-primary card-outline" style="border-left: 2px solid black;">
+                    <div class="card-body box-profile">
+                        <button href="" id="modeel" data-bs-toggle="modal" data-bs-target="#updateModal"
+                            data-id="{{Admin._id}}" data-name="{{Admin.name}}" data-email="{{Admin.email}}"
+                            data-phone="{{Admin.phone}}" data-status="{{Admin.status}}"
+                            class="btn btn-md btn-warning float-right">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <br><br>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Name</b>
+                                <p class="float-right">{{Admin.name}}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Email</b>
+                                <p class="float-right">{{Admin.email}}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Phone</b>
+                                <p class="float-right">{{Admin.phone}}</p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Status</b>
+                                <p class="float-right">{{Admin.status}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- User Details and Booked Services Tabs -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header p-8">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#details"
+                                    data-toggle="tab">Details</a></li>
+                            {{!-- <li class="nav-item"><a class="nav-link" href="#idProofs" data-toggle="tab">Booked
+                                    Services</a></li> --}}
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <!-- User Details Tab -->
+                            <div class="tab-pane active" id="details">
+                                <div class="row">
+                                    <!-- User Info Fields -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Name</label>
+                                            <input type="text" class="form-control" name="name" readonly
+                                                value="{{Admin.name}}" placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Email</label>
+                                            <input type="email" class="form-control" name="email" readonly
+                                                value="{{Admin.email}}" placeholder="Email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Phone</label>
+                                            <input type="text" class="form-control" readonly value="{{Admin.phone}}"
+                                                placeholder="Phone Number">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Status</label>
+                                            <input type="text" class="form-control" readonly value="{{Admin.status}}"
+                                                placeholder="Status">
+                                        </div>
+                                    </div>
+                                    {{!-- <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Country</label>
+                                            <input type="text" class="form-control" readonly
+                                                value="{{User.country_id.name}}" placeholder="Country">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Address</label>
+                                            <textarea class="form-control" readonly
+                                                rows="1">{{User.address.address}}</textarea>
+                                        </div>
+                                    </div> --}}
+                                </div>
+                            </div>
+
+                            <!-- Booked Services Tab -->
+                            {{!-- <div class="tab-pane" id="idProofs">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Status</th>
+                                            <th>Provider Name</th>
+                                            <th>Provider Phone</th>
+                                            <th>Booking Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each bookings}}
+                                        <tr>
+                                            <td>{{this.categoryId.name}}</td>
+                                            <td>{{this.status}}</td>
+                                            <td>{{this.serviceProviderId.name}}</td>
+                                            <td>{{this.serviceProviderId.phone}}</td>
+                                            <td>{{formatDate this.date.date "YYYY-MM-DD"}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> --}}
+                    </div>
+                </div><!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: black; font-weight: bold;">Update Admin</h3>
+            </div>
+            <form action="/admin/update-admin/{{this._id}}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <label for="update-name">Name</label>
+                    <input type="text" class="form-control" name="name" id="update-name" placeholder="Name" required
+                        maxlength="30" minlength="3" pattern="^[a-zA-Z\s]+$" oninput="validateName(this)">
+                    <small id="nameError" class="text-danger" style="display: none;">
+                        Name should only contain letters and spaces (3-30 characters).
+                    </small>
+                </div>
+
+                <div class="modal-body">
+                    <label for="update-email">Email</label>
+                    <input type="text" class="form-control" name="email" id="update-email" placeholder="Email" required
+                        maxlength="50" oninput="validateEmail(this)">
+                    <small id="emailError" class="text-danger" style="display: none;">
+                        Please enter a valid email address (e.g., example@domain.com).
+                    </small>
+                </div>
+
+                <script>
+                    function validateName(input) {
+                        const nameRegex = /^[a-zA-Z\s]{3,30}$/;
+                        const errorElement = document.getElementById('nameError');
+
+                        if (!nameRegex.test(input.value)) {
+                            errorElement.style.display = 'block';
+                        } else {
+                            errorElement.style.display = 'none';
+                        }
+                    }
+
+                    function validateEmail(input) {
+                        input.value = input.value.toLowerCase();
+
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+                        const errorElement = document.getElementById('emailError');
+
+                        if (!emailRegex.test(input.value)) {
+                            errorElement.style.display = 'block';
+                        } else {
+                            errorElement.style.display = 'none';
+                        }
+                    }
+                </script>
+
+
+                <div class="modal-body">
+                    <label for="phone">Mobile</label>
+                    <div class="input-group">
+                        <input type="number" id="update-phone" class="form-control no-spinner" name="phone"
+                            placeholder="Mobile Number" value="{{User.phone}}" required>
+                    </div>
+                </div>
+
+                <script>
+                    // Phone number validation
+                    document.getElementById('phone').addEventListener('input', function () {
+                        const phone = document.getElementById('phone');
+                        const errorMessage = document.getElementById('phone-error2');
+
+                        // Check if the phone number matches the pattern of 6–9 digits
+                        const phonePattern = /^[0-9]{6,9}$/;
+
+                        if (!phonePattern.test(phone.value)) {
+                            // Show the error message and add an invalid class if invalid
+                            errorMessage.style.display = 'block';
+                            phone.classList.add('is-invalid');
+                        } else {
+                            // Hide the error message and remove the invalid class if valid
+                            errorMessage.style.display = 'none';
+                            phone.classList.remove('is-invalid');
+                        }
+                    });
+                </script>
+
+                <script>
+                    // International Telephone Input initialization
+                    const updatePhoneInput = document.querySelector("#phone"); // Updated selector
+                    const savedData = {
+                        phone: "{{User.phone}}", // Replace with dynamic server-side rendering data
+                        countryCode: "{{User.countryCode}}" // Replace with server-side data
+                    };
+                    const itiUpdate = window.intlTelInput(updatePhoneInput, {
+                        initialCountry: "auto",
+                        separateDialCode: true,
+                        preferredCountries: ['us', 'gb', 'ca'],
+                        geoIpLookup: function (callback) {
+                            fetch('https://ipinfo.io/json?token=<YOUR_TOKEN>') // Replace <YOUR_TOKEN> with your token
+                                .then(response => response.json())
+                                .then(data => callback(data.country))
+                                .catch(() => callback('us')); // Default to 'us' if lookup fails
+                        }
+                    });
+                    // Update the input field with saved data
+                    if (savedData.phone) {
+                        updatePhoneInput.value = savedData.phone; // Set the phone number
+                    }
+                    if (savedData.countryCode) {
+                        itiUpdate.setCountry(savedData.countryCode); // Set the country code
+                    }
+                </script>
+                </script>
+                <div class="modal-body">
+                    <label for="status" class="col-sm-3 col-form-label text-end">Status</label>
+                    <select name="status" id="" class="form-control statuss">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{{>footer}}
+
+<script>
+    // Fetch subcategories based on selected category
+    function subCategory() {
+        const category = document.getElementById('category').value;
+        const subcategoryDropdown = document.getElementById('subcategory');
+        subcategoryDropdown.innerHTML = '<option value="" disabled selected>Select User Sub-Category</option>';
+
+        fetch(`${window.location.origin}/api/city/subcategories/${category}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(subcategory => {
+                    const option = document.createElement('option');
+                    option.value = subcategory.name;
+                    option.textContent = subcategory.name;
+                    subcategoryDropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching subcategories:', error));
+    }
+
+    // Handle flavors for selected subcategory
+    function categories() {
+        const subcategory = document.getElementById('subcategory').value;
+        const selectedSubcategory = data1.find(item => item.name === subcategory);
+        const flavorDropdown = document.getElementById('flavor');
+
+        if (selectedSubcategory?.flavor === 'false') {
+            flavorDropdown.setAttribute('disabled', 'disabled');
+        } else {
+            flavorDropdown.removeAttribute('disabled');
+        }
+    }
+</script>
+
+<script>
+    // Update modal functionality
+    // Update modal functionality
+    $('#updateModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        var userId = button.data('id');
+        var name = button.data('name');
+        var email = button.data('email');
+        var phone = button.data('phone');
+        var status = button.data('status');
+
+        console.log("status", status)
+        modal.find('form').attr('action', '/admin/update-admin/' + userId);
+        modal.find('#update-name').val(name);
+        modal.find('#update-email').val(email);
+        modal.find('#update-phone').val(phone);
+        modal.find('#update-statuss').val(phone);
+        $(".statuss").val(status);
+    }); 
+</script>

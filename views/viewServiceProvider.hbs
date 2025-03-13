@@ -1,0 +1,275 @@
+{{>header}}
+<title>Service Provider Details</title>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row pb-2 pr-2 pl-2">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3">
+                    <div class="card-header" style="background-color: white; color:rgb(0, 0, 0);">
+                        <h4><b>Service Provider Details</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-primary card-outline" style="border-left: 2px solid black;">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-box" style="height: 50%; width:50%"
+                                src="{{ServiceProvider.photo}}" alt="User image"
+                                onerror="this.onerror=null; this.src='/admin/images/dummy.png';">
+                        </div><br>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Name</b>
+                                <p class="float-right">
+                                    {{ServiceProvider.name}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Email</b>
+                                <p class="float-right">
+                                    {{ServiceProvider.email}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Phone</b>
+                                <p class="float-right">
+                                    {{ServiceProvider.phone}}
+                                </p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <b>Address</b>
+                                <p class="float-right">
+                                    {{#if
+                                    ServiceProvider.address.address}}{{ServiceProvider.address.address}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <b>Adhar No</b>
+                                <p class="float-right">
+                                    {{#if
+                                    ServiceProvider.aadhar_no}}{{ServiceProvider.aadhar_no}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <b>Passport No</b>
+                                <p class="float-right">
+                                    {{#if
+                                    ServiceProvider.passport_no}}{{ServiceProvider.passport_no}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <b>Status</b>
+                                <p class="float-right">
+                                    {{!-- {{#if User.status}} --}}
+                                    {{User.status}}
+                                    {{!-- {{else}}--------{{/if}} --}}
+                                </p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <b>Driving License No</b>
+                                <p class="float-right">
+                                    {{#if
+                                    ServiceProvider.drivers_license_no}}{{ServiceProvider.drivers_license_no}}{{else}}--------{{/if}}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header p-8">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#details" data-toggle="tab">Service
+                                    Provider
+                                    Details</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#idProofs" data-toggle="tab">
+                                    Booked services</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#selectedServices" data-toggle="tab">
+                                    Own Bookings</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="details">
+                                <form method="post" action="/admin/update-service-provider/{{ServiceProvider._id}}"
+                                    enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Name<span
+                                                        class="text-danger"></span></label>
+                                                <input type="text" class="form-control" name="name" readonly
+                                                    value="{{ServiceProvider.name}}" placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Phone<span
+                                                        class="text-danger"></span></label>
+                                                <input type="text" class="form-control" name="name" readonly
+                                                    value="{{ServiceProvider.phone}}" placeholder="Phone Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Address <span
+                                                        class="text-danger"></span></label>
+                                                <input type="text" class="form-control" name="name" readonly
+                                                    value=" {{#if
+                                    ServiceProvider.address.address}}{{ServiceProvider.address.address}}{{else}}--------{{/if}}" placeholder="Address">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Aadhar No.<span
+                                                        class="text-danger"></span></label>
+                                                <!-- Directly use ServiceProvider.aadhar_no since it's a string value -->
+                                                <input type="text" class="form-control" name="name" readonly value=" {{#if
+                                    ServiceProvider.aadhar_no}}{{ServiceProvider.aadhar_no}}{{else}}--------{{/if}}"
+                                                    placeholder="Aadhar">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Passport No.<span
+                                                        class="text-danger"></span></label>
+                                                <!-- Directly use ServiceProvider.aadhar_no since it's a string value -->
+                                                <input type="text" class="form-control" name="name" readonly
+                                                    value="{{#if ServiceProvider.passport_no}}{{ServiceProvider.passport_no}}{{else}}--------{{/if}}"
+                                                    placeholder="Passport">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Drivng License No.<span
+                                                        class="text-danger"></span></label>
+                                                <!-- Directly use ServiceProvider.aadhar_no since it's a string value -->
+                                                <input type="text" class="form-control" name="name" readonly
+                                                    value="{{#if ServiceProvider.drivers_license_no}}{{ServiceProvider.drivers_license_no}}{{else}}--------{{/if}}"
+                                                    placeholder="Drivng License">
+                                            </div>
+
+                                            {{!-- <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Status</label>
+                                                    <select name="status" class="form-control">
+                                                        <option value="Active" {{#eq User.status 'Active' }} selected
+                                                            {{/eq}}>
+                                                            Active</option>
+                                                        <option value="Inactive" {{#eq User.status 'Inactive' }}
+                                                            selected {{/eq}}>Inactive</option>
+                                                    </select>
+                                                </div>
+                                            </div> --}}
+
+                                            <div class="form-group">
+                                                <label class="col-form-label">Status</label>
+                                                <select name="status" class="form-control">
+                                                    <option value="Active" {{#eq User.status 'Active' }} selected
+                                                        {{/eq}}>
+                                                        Active</option>
+                                                    <option value="Inactive" {{#eq User.status 'Inactive' }} selected
+                                                        {{/eq}}>Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Email<span
+                                                        class="text-danger"></span></label>
+                                                <input type="email" class="form-control" name="name" readonly
+                                                    value="{{ServiceProvider.email}}" placeholder="Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button type="submit" class="btn btn-info col-md-4">Update</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="tab-pane" id="idProofs">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Service Name</th>
+                                            <th>Service Status</th>
+                                            <th>Booking Date</th>
+                                            <th>Customer Phone</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each bookings}}
+                                        <tr>
+                                            <td>{{this.categoryId.name}}</td>
+                                            <td>{{this.status}}</td>
+                                            <td>{{formatDate this.date.date "YYYY-MM-DD"}}</td>
+                                            <td>{{this.userId.phone}}</td>
+                                            <td>
+                                                <a href="/admin/bookings/{{this._id}}" class="btn btn-md btn-info m-1">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="selectedServices">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Service Name</th>
+                                            <th>Service Status</th>
+                                            <th>Booking Date</th>
+                                            <th>Customer Phone</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each bookings}}
+                                        <tr>
+                                            <td>{{this.categoryId.name}}</td>
+                                            <td>{{this.status}}</td>
+                                            <td>{{formatDate this.date.date "YYYY-MM-DD"}}</td>
+                                            <td>{{this.userId.phone}}</td>
+                                            <td>
+                                                <a href="/admin/bookings/{{this._id}}" class="btn btn-md btn-info m-1">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-content -->
+                </div><!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+{{>footer}}
+
+</html>

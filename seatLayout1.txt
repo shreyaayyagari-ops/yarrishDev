@@ -1,0 +1,64 @@
+{
+  "screenId": "screen1",
+  "rows": [
+    {
+      "rowId": 1,
+      "rowLabel": "A",
+      "rowType": "Recliner",
+      "price": 800,
+      "columns": [
+        {
+          "seatId": "A1",
+          "position": 1,
+          "availability": "available"
+        },
+        {
+          "seatId": "A2",
+          "position": 2,
+          "availability": "available"
+        }
+      ]
+    },
+    {
+      "rowId": 2,
+      "rowLabel": "B",
+      "rowType": "Gold",
+      "price": 800,
+      "columns": [
+        null,
+        null,
+        null,
+        {
+          "seatId": "B1",
+          "position": 4,
+          "availability": "booked"
+        },
+        {
+          "seatId": "B2",
+          "position": 5,
+          "availability": "available"
+        }
+      ]
+    },
+    {
+      "rowId": 3,
+      "rowLabel": "C",
+      "rowType": "Rgeular",
+      "price": 800,
+      "columns": [
+        null,
+        null,
+        {
+          "seatId": "C1",
+          "position": 3,
+          "availability": "available"
+        },
+        {
+          "seatId": "C2",
+          "position": 4,
+          "availability": "available"
+        }
+      ]
+    }
+  ]
+}

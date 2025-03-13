@@ -1,0 +1,186 @@
+</div>
+<!-- /.content-wrapper -->
+
+<footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+        {{!-- <b>Version</b> 1.0 --}}
+    </div>
+    <strong>Copyright &copy; 2014-2024 <a href="https://analogueitsolutions.com/" target="_blank">Analogue IT
+            Solutions</a>.</strong> All rights reserved.
+</footer>
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<script>
+    // Show the loader on page load
+    document.onreadystatechange = function () {
+        if (document.readyState !== "complete") {
+            document.querySelector("body").style.visibility = "hidden";
+            document.querySelector("#loader").style.visibility = "visible";
+        } else {
+            document.querySelector("#loader").style.display = "none";
+            document.querySelector("body").style.visibility = "visible";
+        }
+    };
+</script>
+
+<!-- jQuery -->
+<script src="/admin/js/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/admin/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="/admin/js/jquery.dataTables.min.js"></script>
+<script src="/admin/js/dataTables.bootstrap4.min.js"></script>
+<script src="/admin/js/dataTables.responsive.min.js"></script>
+<script src="/admin/js/responsive.bootstrap4.min.js"></script>
+<script src="/admin/js/dataTables.buttons.min.js"></script>
+<script src="/admin/js/buttons.bootstrap4.min.js"></script>
+<script src="/admin/js/jszip.min.js"></script>
+<script src="/admin/js/pdfmake.min.js"></script>
+<script src="/admin/js/vfs_fonts.js"></script>
+<script src="/admin/js/buttons.html5.min.js"></script>
+<script src="/admin/js/buttons.print.min.js"></script>
+<script src="/admin/js/buttons.colVis.min.js"></script>
+<script src="/admin/js/inputmask.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/admin/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/admin/js/demo.js"></script>
+
+<!-- Select2 -->
+<!--<script src="/admin/plugins/select2/js/select2.full.min.js"></script>-->
+
+<!-- Bootstrap Switch -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
+<script src="/admin/js/bootstrap-switch.min.js"></script>
+<script src="/admin/js/style.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+
+<script>
+    $("input[data-bootstrap-switch]").each(function () {
+        $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        if (!$.fn.DataTable.isDataTable('#example2')) {
+            $('#example2').addClass('table table-bordered table-striped').DataTable({
+                "paging": true,
+            });
+        }
+
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $("#example1").DataTable({
+            "responsive": true, "ordering": true, "lengthChange": false, "autoWidth": false, "bPaginate": true, "bInfo": false, "searching": true, "pageLength": 10,
+            order: [[0, 'asc']],
+            buttons: [
+                {
+                    extend: 'csvHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                'colvis'
+            ]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+
+    });
+</script>
+<script>
+    function validateInput(input) {
+        input.value = input.value.replace(/\D/g, '');
+    }
+</script>
+<script>
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Example of dynamic messages from the backend (passed into the template engine)
+        const successMsg = '{{ success }}';
+        const errorMsg = '{{ error }}';
+
+
+        if (successMsg) {
+            showToast('success', successMsg);
+        }
+        if (errorMsg) {
+            showToast('error', errorMsg);
+        }
+    });
+
+    function showToast(type, message) {
+        const toast = document.querySelector(`.toast.${type}`); // Select the correct toast type
+        const toastMessage = toast.querySelector('.toast-message');
+        toastMessage.textContent = message; // Set the dynamic message
+
+        // Set dynamic background color based on type
+        let bgColor;
+        switch (type) {
+            case 'success':
+                bgColor = '#4CAF50'; // Green for success
+                break;
+            case 'error':
+                bgColor = '#f44336'; // Red for error
+                break;
+            case 'warning':
+                bgColor = '#ff9800'; // Orange for warning
+                break;
+            case 'info':
+                bgColor = '#2196F3'; // Blue for info
+                break;
+            default:
+                bgColor = '#323232'; // Default dark background
+        }
+        toast.style.backgroundColor = bgColor;
+
+        // Ensure the toast is visible
+        toast.style.display = 'flex';
+        toast.style.opacity = '1';
+
+        // Auto-hide the toast after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0'; // Fade-out effect
+            setTimeout(() => {
+                toast.style.display = 'none'; // Hide completely after fade-out
+            }, 300); // Match the fade-out duration
+        }, 3000); // Display duration
+    }
+
+
+    function closeToast(element) {
+        const toast = element.parentElement;
+        toast.style.opacity = "0";
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 300);
+    }
+</script>

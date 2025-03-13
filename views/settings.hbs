@@ -1,0 +1,165 @@
+{{>header}}
+<style>
+    /* For Webkit browsers (Chrome, Safari, Edge) */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* For Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+<link rel="stylesheet" href="/admin/css/summernote-bs4.min.css">
+<title>Settings</title>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3" style="border-left: 2px solid black;">
+                    <div class="card-header text-left" style="background-color: white; color:black;">
+                        <h3><b>Settings</b></h3>
+                    </div>
+                </div>
+                <form method="post" action="/admin/updatesettings/{{allSettings._id}}">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Service Provider Section -->
+                            {{!-- <div class="text-center mb-4">
+                                <h4><b>Service Provider</b></h4>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>Privacy Policy</b></h5>
+                                </label>
+                                <textarea name="serviceProviderPrivacyPolicy" id="summernote1"
+                                    class="form-control">{{allSettings.serviceProviderPrivacyPolicy}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>Refund Policy</b></h5>
+                                </label>
+                                <textarea name="serviceProviderRefundPolicy" id="summernote2"
+                                    class="form-control">{{allSettings.serviceProviderRefundPolicy}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>Terms & Conditions</b></h5>
+                                </label>
+                                <textarea name="serviceProviderTermsAndConditions" id="summernote3"
+                                    class="form-control">{{{allSettings.serviceProviderTermsAndConditions}}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>About App</b></h5>
+                                </label>
+                                <textarea name="serviceProviderAboutUs" id="summernote4"
+                                    class="form-control">{{{allSettings.serviceProviderAboutUs}}}</textarea>
+                            </div> --}}
+
+                            <!-- User Section -->
+                            {{!-- <div class="text-center mb-4 mt-5">
+                                <h4><b>User</b></h4>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>Privacy Policy</b></h5>
+                                </label>
+                                <textarea name="userPrivacyPolicy" id="summernote5"
+                                    class="form-control">{{{allSettings.userPrivacyPolicy}}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>Refund Policy</b></h5>
+                                </label>
+                                <textarea name="userRefundPolicy" id="summernote6"
+                                    class="form-control">{{{allSettings.userRefundPolicy}}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>Terms & Conditions</b></h5>
+                                </label>
+                                <textarea name="userTermsAndConditions" id="summernote7"
+                                    class="form-control">{{{allSettings.userTermsAndConditions}}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <h5><b>About App</b></h5>
+                                </label>
+                                <textarea name="userAboutUs" id="summernote8"
+                                    class="form-control">{{{allSettings.userAboutUs}}}</textarea>
+                            </div> --}}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <h5><b>Email</b></h5>
+                                        </label>
+                                        <input type="email" name="email" class="form-control"
+                                            value="{{{allSettings.email}}}"
+                                            oninput="this.value = this.value.toLowerCase()">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <h5><b>Phone</b></h5>
+                                        </label>
+                                        {{!-- <input type="tel" name="phone" class="form-control"
+                                            value="{{{allSettings.phone}}}" pattern="^[7-9][0-9]{9}$" maxlength="10"
+                                            required> --}}
+                                        <input type="tel" name="phone" class="form-control"
+                                            value="{{{allSettings.phone}}}" pattern="^[7-9][0-9]{9}$" maxlength="10"
+                                            required placeholder="Enter 10-digit phone number"
+                                            title="Phone number must start with 7, 8, or 9, followed by 9 digits">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <h5><b>Initial Amount</b></h5>
+                                        </label>
+                                        <input type="number" name="initialAmount" class="form-control"
+                                            value="{{{allSettings.initialAmount}}}" max="9999999999">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>
+                                            <h5><b>Referal Amount</b></h5>
+                                        </label>
+                                        <input type="number" name="referalAmount" class="form-control"
+                                            value="{{{allSettings.referalAmount}}}" max="9999999999">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="form-group d-flex justify-content-center mt-4">
+                                <button class="btn btn-lg btn-warning" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{{>footer}}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="/admin/js/summernote-bs4.min.js"></script>
+<script>
+    $(function () {
+        $('#summernote1, #summernote2, #summernote3, #summernote4, #summernote5, #summernote6, #summernote7, #summernote8').summernote();
+    });
+</script>
+</body>
+
+</html>

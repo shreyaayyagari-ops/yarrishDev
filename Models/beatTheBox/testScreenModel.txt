@@ -1,0 +1,63 @@
+const mongoose = require("mongoose");
+
+const screenSchema = new mongoose.Schema({
+  screenName: { type: String, required: true },
+  movieTheater: { type: mongoose.Schema.Types.ObjectId, required: false, ref: 'MovieTheater', },
+  seatLayoutStatus: { type: Boolean, required: false, default: false },
+  status: { type: String, required: false, default: 'Active' },
+}, { timestamps: true });
+
+const Screen = mongoose.model('Screen', screenSchema);
+
+module.exports = Screen;
+
+
+
+
+
+// createSeatLayout: async (req, res) => {
+//   try {
+//     const { screenId, seatLayout } = req.body;
+//     const existingLayout = await SeatLayout.findOne({ screenId });
+//     if (existingLayout) {
+//       return res.status(400).json({ message: "Seat layout for this screen already exists." });
+//     }
+//     const newLayout = new SeatLayout({ screenId, seatLayout });
+//     newLayout.layout_status = true
+//     await newLayout.save();
+//     res.status(201).json({ message: "Seat layout created successfully.", data: newLayout });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error creating seat layout.", error: error.message });
+//   }
+// },
+// getSeatLayout: async (req, res) => {
+//   try {
+//     const { screenId } = req.params;
+//     const layout = await SeatLayout.findOne({ screenId });
+//     if (!layout) {
+//       return res.status(404).json({ message: "Seat layout not found for this screen." });
+//     }
+//     res.status(200).json({ data: layout });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error retrieving seat layout.", error: error.message });
+//   }
+// },
+// updateSeatAvailability: async (req, res) => {
+//   try {
+//     const { screenId } = req.params;
+//     const { seatId, isAvailable } = req.body;
+//     const layout = await SeatLayout.findOne({ screenId });
+//     if (!layout) {
+//       return res.status(404).json({ message: "Seat layout not found for this screen." });
+//     }
+//     const seat = layout.seatLayout.id(seatId);
+//     if (!seat) {
+//       return res.status(404).json({ message: "Seat not found." });
+//     }
+//     seat.isAvailable = isAvailable;
+//     await layout.save();
+//     res.status(200).json({ message: "Seat availability updated successfully.", data: layout });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error updating seat availability.", error: error.message });
+//   }
+// },

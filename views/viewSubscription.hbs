@@ -1,0 +1,212 @@
+{{>header}}
+<title>Subscription Details</title>
+{{!-- <div class="alert-success">{{success}}</div>
+<div class="alert-danger">{{error}}</div> --}}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row pb-2 pr-2 pl-2">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline mt-3">
+                    <div class="card-header" style="background-color: white; color:rgb(0, 0, 0);">
+                        <h4><b>Subscription Details</b></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-primary card-outline" style="border-left: 2px solid black;">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            {{!-- <img class="profile-Subscription-img img-fluid img-box" src="{{Subscription.image}}" alt="Subscription image">
+                            --}}
+                        </div><br>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Subscription Name</b>
+                                <p class="float-right">
+                                    {{Subscription.name}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Durations(days)</b>
+                                <p class="float-right">
+                                    {{Subscription.days}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Pricing</b>
+                                <p class="float-right">
+                                    {{Subscription.price}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Discount</b>
+                                <p class="float-right">
+                                    {{Subscription.discount}}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Status</b>
+                                <p class="float-right">
+                                    {{Subscription.status}}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-8">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#details"
+                                    data-toggle="tab">Subscription
+                                    Details</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#idProofs" data-toggle="tab">
+                                    Subscribed Users
+                                    </a>
+                            </li>
+
+                            {{!-- <li class="nav-item"><a class="nav-link" href="#joinedSubscriptions"
+                                    data-toggle="tab">Referred
+                                    Subscriptions Digital Arts</a></li> --}}
+                        </ul>
+                    </div><!-- /.card-header -->
+                    {{!-- <div class="alert-success">{{success}}</div>
+                    <div class="alert-danger">{{error}}</div> --}}
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="details">
+                                <form action="/admin/update-subscription/{{Subscription._id}}" method="post"
+                                    enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Subscription Name</label>
+                                                <input type="text" class="form-control" name="name"
+                                                    value="{{Subscription.name}}" placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Durations (days)</label>
+                                                <input type="number" class="form-control" name="days" 
+                                                    value="{{Subscription.days}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Pricing</label>
+                                                <input type="number" class="form-control" name="price" 
+                                                    value="{{Subscription.price}}" placeholder="Phone Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Discount</label>
+                                                <input type="number" class="form-control" name="discount" 
+                                                    value="{{Subscription.discount}}" placeholder="Discount">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="col-form-label">Status</label>
+                                                <select class="form-control" name="status">
+                                                    <option value="{{Subscription.status}}" selected>{{Subscription.status}}
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <button type="submit" class="btn btn-primary"
+                                            style="color: black;">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="idProofs">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>                                            
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each bookings}}
+                                        <tr>
+                                            <td>{{this.categoryId.name}}</td>
+                                            <td>{{this.status}}</td>
+                                            <td>{{this.serviceProviderId.name}}</td>
+                                            <td>{{this.serviceProviderId.phone}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.tab-content -->
+                </div><!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{{>footer}}
+
+<script>
+    let data1
+    function subCategory() {
+        var category = document.getElementById('category').value;
+
+        // Clear previous subcategory options
+        var subcategoryDropdown = document.getElementById('subcategory');
+        subcategoryDropdown.innerHTML = '<option value="" disabled selected>Select Subscription Sub-Category</option>';
+
+        var baseUrl = window.location.origin;
+
+        // Make an API call to fetch subcategories based on the selected category
+        fetch(`${baseUrl}/api/city/subcategories/${category}`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate the subcategory dropdown with the fetched subcategories
+                data1 = data
+                data.forEach(subcategory => {
+                    var option = document.createElement('option');
+                    option.value = subcategory.name;
+                    option.textContent = subcategory.name;
+                    subcategoryDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching subcategories:', error);
+            });
+    }
+
+    function categories() {
+        var subcategory = document.getElementById('subcategory').value;
+
+        // Find the selected subcategory in data1
+        var selectedSubcategory = data1.find(item => item.name === subcategory);
+
+        // Get the flavor dropdown
+        var flavorDropdown = document.getElementById('flavor');
+
+        // Check if the flavor is 'false' and make the dropdown read-only
+        if (selectedSubcategory && selectedSubcategory.flavor === 'false') {
+            flavorDropdown.setAttribute('disabled', 'disabled');
+        } else {
+            // Enable the dropdown if the flavor is not 'false'
+            flavorDropdown.removeAttribute('disabled');
+        }
+    }
+
+
+</script>
